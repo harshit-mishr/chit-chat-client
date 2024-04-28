@@ -30,6 +30,7 @@ const SignUp = () => {
 	return (
 		<div className={style.container}>
 			<Card style={{ maxWidth: "400px", margin: "0 auto" }}>
+				<h2>Welcome to Chit Chat</h2>
 				<Form
 					form={form}
 					name='normal_login'
