@@ -1,7 +1,8 @@
 import Image from "next/image";
+import Login from "./auth/login/page"
 import styles from "./page.module.css";
 
-export default function Home() {
+export default function App() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
