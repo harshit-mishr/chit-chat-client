@@ -1,11 +1,12 @@
 "use client";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Image from "next/image";
+import Login from "./auth/login/page";
 import styles from "./page.module.css";
 import { useSelector } from "react-redux";
 import { decrement, increment } from "@/lib/features/counter/counterSlice";
 
-export default function Home() {
+export default function App() {
 	const dispatch = useAppDispatch();
 	const count = useAppSelector((state) => state.counter.value);
 	console.log("count-->>", count);

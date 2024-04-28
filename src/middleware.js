@@ -19,7 +19,7 @@ export function middleware(request) {
 
 	// Redirect to /auth/login when path is /
 	if (request.nextUrl.pathname === "/") {
-		return NextResponse.redirect(`${BASE_URL}/auth/login`);
+		return NextResponse.redirect(`${BASE_URL}/auth/login`); //will uncomment in future
 	}
 
 	// Log when path is /home
