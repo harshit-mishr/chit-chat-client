@@ -22,9 +22,10 @@ export function middleware(request) {
 		return NextResponse.redirect(`${BASE_URL}/auth/login`); //will uncomment in future
 	}
 
-	// Log when path is /home
+	// Log and set JWT when path is /home and token exists in headers
 	if (request.nextUrl.pathname === "/home") {
-		console.log("Path home is view");
+		console.log("User is authenticated");
+		return NextResponse.next();
 	}
 
 	// Protect /dashboard and /home if user is not authenticated

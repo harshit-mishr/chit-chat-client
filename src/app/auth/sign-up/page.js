@@ -1,14 +1,55 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { Form, Input, Button, Upload, Card } from "antd";
 import style from "../auth.module.css";
 import Link from "next/link";
+import Image from "next/image";
+import apiService from "../../../service/apiService";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
 	const [form] = Form.useForm();
+	const [selectedFile, setSelectedFile] = useState(null);
+	const [localFile, setLocalFile] = useState(null);
+	const router = useRouter();
+	// console.log("uploadRef", uploadRef.current.value);
 
-	const onFinish = (values) => {
-		console.log("Success:", values);
+	const onFinish = async (values) => {
+		try {
+			const formData = new FormData();
+			Object.entries(values).forEach(([key, value]) => {
+				formData.append(key, value);
+			});
+			formData.append("file", localFile);
+
+			for (const [key, value] of formData.entries()) {
+				console.log(`${key}: ${value}`);
+			}
+
+			const response = await apiService.post(
+				"/auth/signup",
+				formData,
+				false,
+				true,
+			);
+			console.log("REsponse from api", response.data);
+
+			if (response.status === 200 || response.status === 201) {
+				const data = response?.data && response?.data;
+				const id = data?.data?._id;
+				console.log("data", data);
+				console.log("Signup successful!");
+				form.resetFields();
+				//use next js router to ssend user to login page
+				const queryParams = new URLSearchParams({ id }).toString();
+				console.log("queryParams", queryParams);
+				router.push(`/auth/verify-email?${queryParams}`);
+			} else {
+				console.error("Signup failed:", response);
+			}
+		} catch (error) {
+			console.error("Error:", error);
+		}
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -26,6 +67,21 @@ const SignUp = () => {
 		}
 		return isJpgOrPng && isLt2M;
 	};
+
+	const handleFileChange = (event) => {
+		const file = event.target.files[0];
+		setLocalFile(file);
+
+		// Read the file as a data URL
+		const reader = new FileReader();
+		reader.onload = () => {
+			// Set the result of FileReader as the selected file
+			setSelectedFile(reader.result);
+		};
+		reader.readAsDataURL(file);
+	};
+
+	// console.log("slectFile-->>", selectedFile);
 
 	return (
 		<div className={style.container}>
@@ -77,40 +133,16 @@ const SignUp = () => {
 						<Input.Password />
 					</Form.Item>
 
-					<Form.Item
-						name='file'
-						label='Profile Picture'
-						valuePropName='fileList'
-						getValueFromEvent={(e) =>
-							e.fileList.slice(-1).filter((file) => file.status === "done")
-						}
-						rules={[
-							{
-								required: true,
-								message: "Please upload your profile picture!",
-							},
-						]}
-					>
-						<Upload
-							name='file'
-							listType='picture-card'
-							className='avatar-uploader'
-							showUploadList={false}
-							action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-							beforeUpload={beforeUpload}
-						>
-							{form.getFieldValue("file")?.[0]?.url ? (
-								<img
-									src={form.getFieldValue("file")?.[0]?.url}
-									alt='avatar'
-									style={{ width: "100%" }}
-								/>
-							) : (
-								<p>Upload</p>
-							)}
-						</Upload>
-					</Form.Item>
-
+					<input
+						// ref={uploadRef}
+						id='profilePic'
+						type='file'
+						onChange={handleFileChange}
+						accept='image/*' // Optionally restrict accepted file types
+					/>
+					{selectedFile && (
+						<Image src={selectedFile} alt='avatar' width={200} height={200} />
+					)}
 					<Form.Item>
 						<Button type='primary' htmlType='submit' block>
 							Sign Up

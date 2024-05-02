@@ -1,9 +1,13 @@
-import React from 'react'
+"use client";
+import withAuth from "@/utils/authentication/withAuth";
+import React from "react";
 
-export default function Home(){
-    return(
-        <div>
-            <p>Home</p>
-        </div>
-    )
+function Home() {
+	return (
+		<div>
+			<p>Home</p>
+		</div>
+	);
 }
+
+export default withAuth(Home);

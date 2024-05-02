@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL =
 	process.env.NODE_ENV === "production"
-		? "http://13.53.130.145/api/" //futre domain
-		: "http://localhost:8000/api/";
+		? "http://13.53.130.145/api" //futre domain
+		: "http://localhost:8000/api";
 
 // Create an instance of axios for routes that require a token
 const apiWithToken = axios.create({
@@ -14,7 +14,7 @@ const apiWithToken = axios.create({
 // Request interceptor for API calls
 apiWithToken.interceptors.request.use(
 	async (config) => {
-		const token = localStorage.getItem("token");
+		const token = localStorage.getItem("accessToken");
 		if (token) {
 			config.headers["Authorization"] = "Bearer " + token;
 		}
@@ -39,8 +39,11 @@ apiWithToken.interceptors.response.use(
 			return axios
 				.post(`${BASE_URL}/refresh-token`, { refreshToken })
 				.then((res) => {
-					if (res.status === 201) {
-						localStorage.setItem("token", res.data.token);
+					if (res.status === 201 || res.status === 200) {
+						console.log("new token", res.data);
+						const { accessToken, refreshToken } = res.data;
+						localStorage.setItem("accessToken", accessToken);
+						localStorage.setItem("refreshToken", refreshToken);
 						return apiWithToken(originalRequest);
 					}
 				})
@@ -62,7 +65,7 @@ const apiWithoutToken = axios.create({
 apiWithoutToken.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		console.error(error);
+		console.error("error without token", error.response.data);
 		return Promise.reject(error);
 	},
 );
