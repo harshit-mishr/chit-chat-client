@@ -35,27 +35,32 @@ apiWithToken.interceptors.response.use(
 		if (error.response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true;
 			const refreshToken = localStorage.getItem("refreshToken");
-			// You can add your logic here to refresh the token
-			return axios
-				.post(`${BASE_URL}/refresh-token`, { refreshToken })
-				.then((res) => {
-					if (res.status === 201 || res.status === 200) {
-						console.log("new token", res.data);
-						const { accessToken, refreshToken } = res.data;
-						localStorage.setItem("accessToken", accessToken);
-						localStorage.setItem("refreshToken", refreshToken);
-						return apiWithToken(originalRequest);
-					}
-				})
-				.catch((err) => {
-					console.error(err);
-					return Promise.reject(error);
-				});
+			console.log("refresh token", refreshToken);
+			originalRequest.headers.Authorization = `Bearer ${refreshToken}`; // set refresh token in header
+			try {
+				const res = await axios.get(
+					`${BASE_URL}/refresh-token`,
+					originalRequest,
+				);
+				if (res.status === 201 || res.status === 200) {
+					console.log("new token", res.data);
+					const { accessToken, refreshToken } = res.data;
+					localStorage.setItem("accessToken", accessToken);
+					localStorage.setItem("refreshToken", refreshToken);
+					originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
+					return apiWithToken(originalRequest);
+				}
+			} catch (err) {
+				console.error(err);
+				localStorage.removeItem("accessToken");
+				localStorage.removeItem("refreshToken");
+				window.location.href = "/auth/login";
+				return Promise.reject(error);
+			}
 		}
 		return Promise.reject(error);
 	},
 );
-
 // Create an instance of axios for routes that don't require a token
 const apiWithoutToken = axios.create({
 	baseURL: BASE_URL, // replace with your API base URL
