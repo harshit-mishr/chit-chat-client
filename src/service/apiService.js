@@ -2,8 +2,8 @@ import axios from "axios";
 
 const BASE_URL =
 	process.env.NODE_ENV === "production"
-		? "https://your-production-url.com" //futre domain
-		: "http://localhost:8000/api";
+		? "http://13.53.130.145/api/" //futre domain
+		: "http://localhost:8000/api/";
 
 // Create an instance of axios for routes that require a token
 const apiWithToken = axios.create({
@@ -37,12 +37,16 @@ apiWithToken.interceptors.response.use(
 			const refreshToken = localStorage.getItem("refreshToken");
 			// You can add your logic here to refresh the token
 			return axios
-				.post("https://your-api-url.com/refresh-token", { refreshToken })
+				.post(`${BASE_URL}/refresh-token`, { refreshToken })
 				.then((res) => {
 					if (res.status === 201) {
 						localStorage.setItem("token", res.data.token);
 						return apiWithToken(originalRequest);
 					}
+				})
+				.catch((err) => {
+					console.error(err);
+					return Promise.reject(error);
 				});
 		}
 		return Promise.reject(error);
@@ -51,9 +55,18 @@ apiWithToken.interceptors.response.use(
 
 // Create an instance of axios for routes that don't require a token
 const apiWithoutToken = axios.create({
-	baseURL: "https://your-api-url.com", // replace with your API base URL
+	baseURL: BASE_URL, // replace with your API base URL
 	timeout: 10000, // request timeout
 });
+
+apiWithoutToken.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		console.error(error);
+		return Promise.reject(error);
+	},
+);
+
 const apiService = {
 	get: (url, params, requiresToken = true) =>
 		(requiresToken ? apiWithToken : apiWithoutToken).get(url, { params }),

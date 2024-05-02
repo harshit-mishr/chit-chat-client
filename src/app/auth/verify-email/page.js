@@ -23,7 +23,8 @@ export default function Login() {
 	return (
 		<div className={style.container}>
 			<Card style={{ maxWidth: "400px", margin: "0 auto" }}>
-				<h2>Welcom to Chit Chat</h2>
+				<h2>Verify your email</h2>
+				<br />
 				<Form
 					form={form}
 					name='normal_login'
@@ -33,29 +34,16 @@ export default function Login() {
 					onFinishFailed={onFinishFailed}
 				>
 					<Form.Item
-						label='Username'
-						name='username'
-						rules={[{ required: true, message: "Please input your username!" }]}
+						label='Otp'
+						name='otp'
+						rules={[{ required: true, message: "Please input your OTP!" }]}
 					>
 						<Input />
 					</Form.Item>
 
-					<Form.Item
-						label='Password'
-						name='password'
-						rules={[
-							{
-								required: true,
-								message: "Please input your password!",
-							},
-						]}
-					>
-						<Input.Password />
-					</Form.Item>
-
 					<Form.Item>
 						<Button type='primary' htmlType='submit' block>
-							Log In
+							Verify Email
 						</Button>
 						Or <Link href='/auth/sign-up'>SignUp now!</Link>
 					</Form.Item>
