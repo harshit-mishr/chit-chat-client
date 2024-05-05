@@ -55,6 +55,7 @@ export default function Login() {
 			<Card style={{ maxWidth: "400px", margin: "0 auto" }}>
 				<h2>Welcom to Chit Chat</h2>
 				<Form
+					layout={"vertical"}
 					form={form}
 					name='normal_login'
 					className='login-form'

@@ -6,13 +6,28 @@ import Link from "next/link";
 import Image from "next/image";
 import apiService from "../../../service/apiService";
 import { useRouter } from "next/navigation";
+import {
+	UploadOutlined,
+	FileImageOutlined,
+	DeleteOutlined,
+} from "@ant-design/icons";
 
 const SignUp = () => {
 	const [form] = Form.useForm();
 	const [selectedFile, setSelectedFile] = useState(null);
 	const [localFile, setLocalFile] = useState(null);
 	const router = useRouter();
+	const uploadRef = useRef(null);
 	// console.log("uploadRef", uploadRef.current.value);
+
+	const props = {
+		onChange: () => {
+			console.log("uploadRef form upload props");
+			if (uploadRef.current) {
+				uploadRef.current.click();
+			}
+		},
+	};
 
 	const onFinish = async (values) => {
 		try {
@@ -83,11 +98,17 @@ const SignUp = () => {
 
 	// console.log("slectFile-->>", selectedFile);
 
+	const onDelete = () => {
+		setSelectedFile(null);
+		setLocalFile(null);
+	};
+
 	return (
 		<div className={style.container}>
-			<Card style={{ maxWidth: "400px", margin: "0 auto" }}>
+			<Card style={{ minWidth: "300px", margin: "0 auto" }}>
 				<h2>Welcome to Chit Chat</h2>
 				<Form
+					layout={"vertical"}
 					form={form}
 					name='normal_login'
 					className='login-form'
@@ -133,16 +154,61 @@ const SignUp = () => {
 						<Input.Password />
 					</Form.Item>
 
+					<Form.Item
+						name='file'
+						label='Profile Picture'
+						valuePropName='fileList'
+						rules={[
+							{
+								required: false,
+								message: "Please upload your profile picture!",
+							},
+						]}
+					>
+						<div className={style.custom_input_wrapper}>
+							<Button
+								onClick={() => uploadRef.current.click()}
+								icon={<UploadOutlined />}
+							>
+								Upload
+							</Button>
+
+							{selectedFile && (
+								<div
+									className={style.selected_file}
+									style={{
+										border: "1px solid lightgray",
+										padding: "4.5px",
+										borderRadius: "5px",
+									}}
+								>
+									<p>
+										<FileImageOutlined />
+										&nbsp;
+										{localFile?.name.slice(0, 20)}
+									</p>
+									<Button
+										type='danger'
+										icon={<DeleteOutlined style={{ color: "red" }} />}
+										onClick={() => {
+											setSelectedFile(null);
+											setLocalFile(null);
+										}}
+									></Button>
+								</div>
+							)}
+						</div>
+					</Form.Item>
+
 					<input
-						// ref={uploadRef}
+						ref={uploadRef}
+						style={{ display: "none" }}
 						id='profilePic'
 						type='file'
 						onChange={handleFileChange}
 						accept='image/*' // Optionally restrict accepted file types
 					/>
-					{selectedFile && (
-						<Image src={selectedFile} alt='avatar' width={200} height={200} />
-					)}
+
 					<Form.Item>
 						<Button type='primary' htmlType='submit' block>
 							Sign Up

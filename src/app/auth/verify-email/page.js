@@ -61,6 +61,7 @@ export default function VerifyEmail() {
 				<h2>Verify your email</h2>
 				<br />
 				<Form
+					layout={"vertical"}
 					form={form}
 					name='normal_login'
 					className='login-form'
