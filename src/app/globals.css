@@ -1,34 +1,40 @@
 :root {
-  --max-width: 1100px;
-  --border-radius: 12px;
+	--max-width: 1100px;
+	--border-radius: 12px;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
 }
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: hidden;
+	max-width: 100vw;
+	overflow-x: hidden;
+	font-family: "Inter", sans-serif;
+	background-color: #000;
+	color: #fff;
 }
 
 body {
-   
 }
 
 a {
-  color: inherit;
-  text-decoration: none;
+	color: inherit;
+	text-decoration: none;
 }
-:where(.css-dev-only-do-not-override-kghr11).ant-form-item .ant-form-item-label >label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
-  content:""
+:where(.css-dev-only-do-not-override-kghr11).ant-form-item
+	.ant-form-item-label
+	> label.ant-form-item-required:not(
+		.ant-form-item-required-mark-optional
+	)::before {
+	content: "";
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: initial;
-  }
+	html {
+		color-scheme: initial;
+	}
 }
