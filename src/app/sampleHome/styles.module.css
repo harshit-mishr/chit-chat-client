@@ -1,0 +1,9 @@
+/* HorizontalMenu.module.css */
+.customMenuItemSelected {
+    border-bottom: 2px solid rgba(255, 236, 236, 0.726);
+}
+
+/* Override default selected item background */
+.customMenu .ant-menu-item-selected {
+    background-color: transparent !important;
+}

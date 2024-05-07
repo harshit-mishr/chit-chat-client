@@ -25,6 +25,7 @@ import {
     Button,
 } from 'antd';
 import { Typography } from 'antd';
+import styles from './styles.module.css';
 import apiService from '@/service/apiService';
 import { useRouter } from 'next/navigation';
 import withAuth from '@/utils/authentication/withAuth';
@@ -175,7 +176,6 @@ const SampleHome = () => {
     };
 
     //-------------------------------------
-
     const content = (
         <div
             style={{
