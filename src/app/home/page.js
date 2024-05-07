@@ -1,69 +1,40 @@
 'use client';
 import React, { useState } from 'react';
-import {
-    DesktopOutlined,
-    FileOutlined,
-    PieChartOutlined,
-    TeamOutlined,
-    UserOutlined,
-    MenuUnfoldOutlined,
-    AudioOutlined,
-    MenuFoldOutlined,
-    HomeOutlined,
-    ContactsOutlined,
-    UsergroupAddOutlined,
-    BellOutlined,
-} from '@ant-design/icons';
-import {
-    Layout,
-    Menu,
-    theme,
-    Input,
-    Avatar,
-    Badge,
-    Popover,
-    Button,
-} from 'antd';
-import { Typography } from 'antd';
-import apiService from '@/service/apiService';
-import { useRouter } from 'next/navigation';
 import withAuth from '@/utils/authentication/withAuth';
-import Navbar from '@/components/Navbar';
-import MainLayout from '@/components/MainLayout';
+import MainLayout from '@/components/CommonLayout/layout';
+import { Layout, theme } from 'antd';
 
-const { Header, Content, Sider } = Layout;
-const { Title } = Typography;
-const { Search } = Input;
-const { Item } = Menu;
+const { Content } = Layout;
 
 const Home = () => {
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
-    const [selectedKey, setSelectedKey] = useState('2');
-    const handleMenuClick = e => {
-        setSelectedKey(e.key);
-    };
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
 
-    // ---------------------------------
+    const [collapsed, setCollapsed] = useState(false);
 
-    const logout = async () => {
-        try {
-            const refreshToken = localStorage.getItem('refreshToken');
-            const response = await apiService.post(
-                '/auth/logout',
-                { refreshToken },
-                false,
-            );
-            console.log('response', response);
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            router.push('/auth/login');
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    //-------------------------------------
-
-    return <MainLayout />;
+    return (
+        <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
+            <Content
+                style={{
+                    margin: '0rem',
+                    marginTop: '5rem',
+                    marginLeft: collapsed ? '4rem' : '20rem',
+                    transition: 'margin-left margin-right 0.9s ease-in-out',
+                }}
+            >
+                <div
+                    style={{
+                        padding: 24,
+                        minHeight: '100vh',
+                        maxHeight: '100vh',
+                        background: colorBgContainer,
+                    }}
+                >
+                    Bill is a cat.
+                </div>
+            </Content>
+        </MainLayout>
+    );
 };
 export default withAuth(Home);

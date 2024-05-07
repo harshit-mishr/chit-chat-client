@@ -10,17 +10,13 @@ import {
     UsergroupAddOutlined,
     BellOutlined,
 } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
 import CustomPopover from '../CustomPopover';
 
 const { Header } = Layout;
 const { Title } = Typography;
 const { Search } = Input;
-const { Item } = Menu;
 
-function Navbar({ collapsed, setCollapsed, userData }) {
-    const router = useRouter();
-
+function Navbar({ collapsed, setCollapsed, userData, logout }) {
     const onSearch = (value, _e, info) => console.log(info?.source, value); //will update in future
     const [selectedKey, setSelectedKey] = useState('1');
     const handleMenuClick = e => {
@@ -97,23 +93,6 @@ function Navbar({ collapsed, setCollapsed, userData }) {
         },
     ];
 
-    const logout = async () => {
-        try {
-            const refreshToken = localStorage.getItem('refreshToken');
-            const response = await apiService.post(
-                '/auth/logout',
-                { refreshToken },
-                false,
-            );
-            console.log('response', response);
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            router.push('/auth/login');
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
     return (
         <Header
             style={{
@@ -121,7 +100,7 @@ function Navbar({ collapsed, setCollapsed, userData }) {
                 alignItems: 'center',
                 height: '5rem',
                 paddingLeft: '1.5rem',
-                paddingRight: '1rem',
+                paddingRight: '1.5rem',
                 position: 'fixed',
                 width: '100%',
                 top: 0,
