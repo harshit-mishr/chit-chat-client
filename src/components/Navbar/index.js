@@ -1,5 +1,5 @@
 import { Avatar, Badge, Input, Layout, Menu, Typography } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     UserOutlined,
     MenuUnfoldOutlined,
@@ -11,6 +11,9 @@ import {
     BellOutlined,
 } from '@ant-design/icons';
 import CustomPopover from '../CustomPopover';
+import { setSelectedOption } from '@/lib/features/navbar/navbarSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { usePathname, useRouter } from 'next/navigation';
 
 const { Header } = Layout;
 const { Title } = Typography;
@@ -18,9 +21,41 @@ const { Search } = Input;
 
 function Navbar({ collapsed, setCollapsed, userData, logout }) {
     const onSearch = (value, _e, info) => console.log(info?.source, value); //will update in future
-    const [selectedKey, setSelectedKey] = useState('1');
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+    const { selectedOption } = useAppSelector(state => state.navbar);
     const handleMenuClick = e => {
-        setSelectedKey(e.key);
+        dispatch(setSelectedOption(e.key));
+        handleNavigation(e.key);
+    };
+
+    //get route name from router
+    const routeName = usePathname();
+    console.log('route name-->', routeName);
+    useEffect(() => {
+        if (routeName.includes(['/profile'])) {
+            dispatch(setSelectedOption(null));
+        }
+    }, [routeName]);
+
+    const handleNavigation = e => {
+        //write switch and cases if e === 1 then navigate to home
+        switch (e) {
+            case '1':
+                console.log('home');
+                router.push('/home');
+                break;
+            case '2':
+                console.log('profile');
+                router.push('/profile/setting');
+                break;
+            case '3':
+                console.log('contacts');
+                router.push('/contacts');
+                break;
+            default:
+                break;
+        }
     };
 
     const navbarItems = [
@@ -31,7 +66,7 @@ function Navbar({ collapsed, setCollapsed, userData, logout }) {
                     style={{
                         fontSize: '1.2rem',
                         color:
-                            selectedKey === '1'
+                            selectedOption === '1'
                                 ? '#1668dc'
                                 : 'rgba(255, 236, 236, 0.726)',
                     }}
@@ -45,7 +80,7 @@ function Navbar({ collapsed, setCollapsed, userData, logout }) {
                     style={{
                         fontSize: '1.2rem',
                         color:
-                            selectedKey === '2'
+                            selectedOption === '2'
                                 ? '#1668dc'
                                 : 'rgba(255, 236, 236, 0.726)',
                     }}
@@ -59,7 +94,7 @@ function Navbar({ collapsed, setCollapsed, userData, logout }) {
                     style={{
                         fontSize: '1.2rem',
                         color:
-                            selectedKey === '3'
+                            selectedOption === '3'
                                 ? '#1668dc'
                                 : 'rgba(255, 236, 236, 0.726)',
                     }}
@@ -185,11 +220,11 @@ function Navbar({ collapsed, setCollapsed, userData, logout }) {
                             key={item.key}
                             style={{
                                 borderBottom:
-                                    item.key === selectedKey
+                                    item.key === selectedOption
                                         ? '2px solid #1668dc'
                                         : 'none',
                                 backgroundColor:
-                                    item.key === selectedKey
+                                    item.key === selectedOption
                                         ? 'transparent'
                                         : 'inherit',
                                 cursor: 'pointer',
@@ -200,7 +235,7 @@ function Navbar({ collapsed, setCollapsed, userData, logout }) {
                                     backgroundColor: '#141414',
                                     border: '1px solid #424242',
                                     borderColor:
-                                        item.key === selectedKey
+                                        item.key === selectedOption
                                             ? '#1668dc'
                                             : '#424242',
                                 }}

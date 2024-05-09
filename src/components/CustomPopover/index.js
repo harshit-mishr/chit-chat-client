@@ -1,7 +1,9 @@
 import { Avatar, Button, Popover } from 'antd';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 function CustomPopover({ userData, logout }) {
+    const router = useRouter();
     const content = (
         <div
             style={{
@@ -11,7 +13,9 @@ function CustomPopover({ userData, logout }) {
                 justifyContent: 'space-around',
             }}
         >
-            <Button block>Profile</Button>
+            <Button block onClick={() => router.push('/profile/setting')}>
+                Profile
+            </Button>
             <Button block onClick={logout}>
                 Logout
             </Button>
