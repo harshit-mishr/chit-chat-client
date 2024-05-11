@@ -69,77 +69,60 @@ export default function Login() {
     };
 
     return (
-        <ConfigProvider
-            theme={{
-                algorithm: theme.darkAlgorithm,
-                components: {
-                    Button: {
-                        colorPrimary: '#00b96b',
-                        algorithm: true, // Enable algorithm
-                    },
-                    Input: {
-                        colorPrimary: '#eb2f96',
-                        backgroundColor: '#fff',
-                        algorithm: true, // Enable algorithm
-                    },
-                },
-            }}
-        >
-            <Spin spinning={isLoading}>
-                <div className={style.container}>
-                    <Card
-                        style={{
-                            maxWidth: '400px',
-                            minWidth: '300px',
-                            margin: '0 auto',
-                        }}
+        <Spin spinning={isLoading}>
+            <div className={style.container}>
+                <Card
+                    style={{
+                        maxWidth: '400px',
+                        minWidth: '300px',
+                        margin: '0 auto',
+                    }}
+                >
+                    <h2>Welcome to Chit Chat</h2>
+                    <Form
+                        layout={'vertical'}
+                        form={form}
+                        name="normal_login"
+                        className="login-form"
+                        initialValues={{ remember: true }}
+                        onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
                     >
-                        <h2>Welcome to Chit Chat</h2>
-                        <Form
-                            layout={'vertical'}
-                            form={form}
-                            name="normal_login"
-                            className="login-form"
-                            initialValues={{ remember: true }}
-                            onFinish={onFinish}
-                            onFinishFailed={onFinishFailed}
+                        <Form.Item
+                            label="Username"
+                            name="username"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your username!',
+                                },
+                            ]}
                         >
-                            <Form.Item
-                                label="Username"
-                                name="username"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your username!',
-                                    },
-                                ]}
-                            >
-                                <Input />
-                            </Form.Item>
+                            <Input />
+                        </Form.Item>
 
-                            <Form.Item
-                                label="Password"
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your password!',
-                                    },
-                                ]}
-                            >
-                                <Input.Password />
-                            </Form.Item>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please input your password!',
+                                },
+                            ]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
 
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" block>
-                                    Log In
-                                </Button>
-                                Or <Link href="/auth/sign-up">SignUp now!</Link>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </div>
-            </Spin>
-        </ConfigProvider>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit" block>
+                                Log In
+                            </Button>
+                            Or <Link href="/auth/sign-up">SignUp now!</Link>
+                        </Form.Item>
+                    </Form>
+                </Card>
+            </div>
+        </Spin>
     );
 }

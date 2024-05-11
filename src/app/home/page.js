@@ -1,75 +1,58 @@
-"use client";
-import { Button, Card, Image, Typography } from "antd";
-import apiService from "@/service/apiService";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import withAuth from "@/utils/authentication/withAuth";
-import styles from "./page.module.css";
-const { Title, Text } = Typography;
+'use client';
+import React, { useEffect, useState } from 'react';
+import withAuth from '@/utils/authentication/withAuth';
+import MainLayout from '@/components/CommonLayout/layout';
+import { Layout, message, theme } from 'antd';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { fetchUserData } from '@/lib/features/user/userSlice';
 
-function Home() {
-	const [userData, setUserData] = useState(null);
-	const router = useRouter();
+const { Content } = Layout;
 
-	const getUserData = async () => {
-		try {
-			const response = await apiService.get("/user", false);
-			console.log("response", response);
-			setUserData(response.data);
-		} catch (error) {
-			console.error("Error:", error);
-		}
-	};
+const Home = () => {
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
 
-	useEffect(() => {
-		getUserData();
-	}, []);
+    const [collapsed, setCollapsed] = useState(false);
+    const dispatch = useAppDispatch();
 
-	const logout = async () => {
-		try {
-			const refreshToken = localStorage.getItem("refreshToken");
-			const response = await apiService.post(
-				"/auth/logout",
-				{ refreshToken },
-				false,
-			);
-			console.log("response", response);
-			localStorage.removeItem("accessToken");
-			localStorage.removeItem("refreshToken");
-			router.push("/auth/login");
-		} catch (error) {
-			console.error("Error:", error);
-		}
-	};
+    // Select the user data and loading state from the store
+    const loading = useAppSelector(state => state.user.loading);
+    const error = useAppSelector(state => state.user.error);
 
-	return (
-		<Card className={styles.home_card}>
-			<Title level={2}>Home</Title>
-			<Button onClick={getUserData} className={styles.button}>
-				Get User Data
-			</Button>
-			<Button onClick={logout} className={styles.button}>
-				Logout
-			</Button>
-			<hr />
-			{userData && (
-				<div className={styles.user_data}>
-					<Title level={4}>{userData?.username}</Title>
-					<Text>{userData?.email}</Text>
-					<br />
-					<div>
-						<Image
-							src={userData?.profilePicture}
-							alt='profile'
-							width={300}
-							height={300}
-						/>
-					</div>
-				</div>
-			)}
-		</Card>
-	);
-}
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
 
+    useEffect(() => {
+        if (error) {
+            message.error(`Error: ${error}`);
+        }
+    }, []);
+
+    if (loading === 'loading') return <div>Loading...</div>;
+
+    return (
+        <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
+            <Content
+                style={{
+                    margin: '0rem',
+                    marginTop: '1rem',
+                    marginLeft: '2rem',
+                    transition: 'margin-left margin-right 0.9s ease-in-out',
+                    maxWidth: '50vw',
+                }}
+            >
+                <div
+                    style={{
+                        padding: 24,
+                        minHeight: '100vh',
+                        maxHeight: '100vh',
+                        background: colorBgContainer,
+                    }}
+                ></div>
+            </Content>
+        </MainLayout>
+    );
+};
 export default withAuth(Home);
