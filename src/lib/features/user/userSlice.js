@@ -10,6 +10,15 @@ export const fetchUserData = createAsyncThunk(
     },
 );
 
+// Async action for updating user data
+export const updateUserData = createAsyncThunk(
+    'user/updateUserData',
+    async updatedData => {
+        const response = await apiService.put('/user/update', updatedData); // replace with your endpoint
+        return response.data;
+    },
+);
+
 // Slice
 const userSlice = createSlice({
     name: 'user',
@@ -25,6 +34,17 @@ const userSlice = createSlice({
                 state.entities = action.payload;
             })
             .addCase(fetchUserData.rejected, (state, action) => {
+                state.loading = 'idle';
+                state.error = action.error.message;
+            })
+            .addCase(updateUserData.pending, state => {
+                state.loading = 'loading';
+            })
+            .addCase(updateUserData.fulfilled, (state, action) => {
+                state.loading = 'idle';
+                state.entities = action.payload;
+            })
+            .addCase(updateUserData.rejected, (state, action) => {
                 state.loading = 'idle';
                 state.error = action.error.message;
             });
