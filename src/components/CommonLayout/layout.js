@@ -27,12 +27,14 @@ function MainLayout({ children, collapsed, setCollapsed, userData }) {
 
     return (
         <Layout>
-            <Navbar
-                collapsed={collapsed}
-                setCollapsed={setCollapsed}
-                userData={userData}
-                logout={logout}
-            />
+            {
+                // <Navbar
+                //     collapsed={collapsed}
+                //     setCollapsed={setCollapsed}
+                //     userData={userData}
+                //     logout={logout}
+                // />
+            }
             <Layout>
                 {
                     //     <Sider

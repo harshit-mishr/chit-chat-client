@@ -37,9 +37,10 @@ const Home = () => {
             <Content
                 style={{
                     margin: '0rem',
-                    marginTop: '5rem',
-                    marginLeft: collapsed ? '4rem' : '20rem',
+                    marginTop: '1rem',
+                    marginLeft: '2rem',
                     transition: 'margin-left margin-right 0.9s ease-in-out',
+                    maxWidth: '50vw',
                 }}
             >
                 <div
@@ -49,9 +50,7 @@ const Home = () => {
                         maxHeight: '100vh',
                         background: colorBgContainer,
                     }}
-                >
-                    Bill is a cat.
-                </div>
+                ></div>
             </Content>
         </MainLayout>
     );
