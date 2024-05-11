@@ -1,9 +1,12 @@
+import { useAppSelector } from '@/lib/hooks';
 import { Avatar, Button, Popover } from 'antd';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 
-function CustomPopover({ userData, logout }) {
+function CustomPopover({ logout }) {
     const router = useRouter();
+
+    const userData = useAppSelector(state => state.user.entities);
     const content = (
         <div
             style={{

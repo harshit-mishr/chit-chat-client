@@ -1,27 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from '../Navbar';
 import { Layout } from 'antd';
 import apiService from '@/service/apiService';
 import { useRouter } from 'next/navigation';
 import SideBar from '../Sidebar';
 
-function MainLayout({ children, collapsed, setCollapsed }) {
-    const [userData, setUserData] = useState(null);
+function MainLayout({ children, collapsed, setCollapsed, userData }) {
     const router = useRouter();
-
-    const getUserData = async () => {
-        try {
-            const response = await apiService.get('/user', false);
-            console.log('response', response);
-            setUserData(response.data);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
-    React.useEffect(() => {
-        getUserData();
-    }, []);
 
     const logout = async () => {
         try {

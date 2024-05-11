@@ -1,8 +1,10 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import withAuth from '@/utils/authentication/withAuth';
 import MainLayout from '@/components/CommonLayout/layout';
-import { Layout, theme } from 'antd';
+import { Layout, message, theme } from 'antd';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { fetchUserData } from '@/lib/features/user/userSlice';
 
 const { Content } = Layout;
 
@@ -12,6 +14,23 @@ const Home = () => {
     } = theme.useToken();
 
     const [collapsed, setCollapsed] = useState(false);
+    const dispatch = useAppDispatch();
+
+    // Select the user data and loading state from the store
+    const loading = useAppSelector(state => state.user.loading);
+    const error = useAppSelector(state => state.user.error);
+
+    useEffect(() => {
+        dispatch(fetchUserData());
+    }, []);
+
+    useEffect(() => {
+        if (error) {
+            message.error(`Error: ${error}`);
+        }
+    }, []);
+
+    if (loading === 'loading') return <div>Loading...</div>;
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>

@@ -154,9 +154,9 @@ const SampleHome = () => {
         }
     };
 
-    React.useEffect(() => {
-        getUserData();
-    }, []);
+    // React.useEffect(() => {
+    //     getUserData();
+    // }, []);
 
     const logout = async () => {
         try {
