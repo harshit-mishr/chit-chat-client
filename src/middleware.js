@@ -11,7 +11,7 @@ function isUserAuthenticated() {
 
 const BASE_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://your-production-url.com' //futre domain
+        ? 'http://chit-chat-client-fawn.vercel.app/' //vercel for now
         : 'http://localhost:3000';
 
 export function middleware(request) {
