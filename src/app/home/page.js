@@ -6,6 +6,8 @@ import { Input, Layout, message, theme } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 // import { fetchUserData } from '@/lib/features/user/userSlice';
 import CreatePost from '@/components/CreatePost/CreatePost';
+import apiService from '@/service/apiService';
+import PostCard from '@/components/PostCard/PostCard';
 
 const { Content } = Layout;
 
@@ -15,6 +17,21 @@ const Home = () => {
     } = theme.useToken();
 
     const [collapsed, setCollapsed] = useState(false);
+    const [allPost, setAllPost] = useState([]);
+
+    const getAllPosts = async () => {
+        try {
+            const response = await apiService.get('/post', {}, true);
+            setAllPost(response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    console.log('allPost', allPost);
+    useEffect(() => {
+        getAllPosts();
+    }, []);
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -31,12 +48,19 @@ const Home = () => {
                     style={{
                         padding: 45,
                         minHeight: '100vh',
-                        maxHeight: '100vh',
-                        background: colorBgContainer,
-                        border: '1px solid #424242',
+                        maxHeight: 'max-content',
+                        // background: colorBgContainer,
+                        // border: '1px solid #424242',
                     }}
                 >
                     <CreatePost />
+                    <div>
+                        {allPost.map(post => (
+                            <div key={post._id}>
+                                <PostCard post={post} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </Content>
         </MainLayout>

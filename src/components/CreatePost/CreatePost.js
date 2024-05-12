@@ -1,4 +1,4 @@
-import { Button, Image, Input, Tooltip } from 'antd';
+import { Button, Image, Input, Tooltip, theme } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './style.module.css';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
@@ -10,6 +10,9 @@ function CreatePost() {
     const [localFile, setLocalFile] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [description, setDescription] = useState('');
+    const {
+        token: { colorBgContainer },
+    } = theme.useToken();
 
     const onChange = e => {
         setDescription(e.target.value);
@@ -62,7 +65,8 @@ function CreatePost() {
             style={{
                 border: '1px solid #424242',
                 padding: '1rem',
-                borderRadius: '1rem',
+                borderRadius: '0.5rem',
+                background: colorBgContainer,
             }}
         >
             <div
