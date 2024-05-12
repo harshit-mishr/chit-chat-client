@@ -118,6 +118,7 @@ function AccountSetting() {
                             src={selectedFile || userData?.profilePicture}
                             alt="profile picture"
                             height={150}
+                            width={150}
                             style={{ borderRadius: '5%' }}
                         />
                         <div style={{ marginTop: '1rem' }}>
