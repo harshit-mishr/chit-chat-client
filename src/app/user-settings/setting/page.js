@@ -51,6 +51,8 @@ function Profile() {
                 break;
             case '3':
                 console.log('password');
+                router.push('/user-settings/update-password');
+
                 break;
             default:
                 break;

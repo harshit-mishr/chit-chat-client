@@ -1,17 +1,29 @@
 // src/store/store.js
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import counterReducer from '@/lib/features/counter/counterSlice';
+import navbarReducer from '@/lib/features/navbar/navbarSlice';
+import userReducer from '@/lib/features/user/userSlice';
 
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '@/lib/features/counter/counterSlice'; // Import your slice reducer
-import navbarReducer from '@/lib/features/navbar/navbarSlice'; // Import your slice reducer
-import userReducer from '@/lib/features/user/userSlice'; // Import your slice reducer
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['user'], // only user will be persisted
+};
+
+const rootReducer = combineReducers({
+    counter: counterReducer,
+    navbar: navbarReducer,
+    user: userReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const makeStore = () => {
-    return configureStore({
-        reducer: {
-            counter: counterReducer,
-            navbar: navbarReducer,
-            user: userReducer,
-            // Other reducers can be added here
-        },
+    let store = configureStore({
+        reducer: persistedReducer,
     });
+    let persistor = persistStore(store);
+    return { store, persistor };
 };

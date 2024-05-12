@@ -1,4 +1,4 @@
-import { Badge, Layout, Menu, Typography } from 'antd';
+import { Avatar, Badge, Layout, Menu, Typography } from 'antd';
 import React from 'react';
 const { Sider } = Layout;
 const { Title } = Typography;
@@ -13,6 +13,8 @@ import {
 import LogoSVG from '../../utils/assets/logo/logo.png';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
+import CustomPopover from '../CustomPopover';
+import { useAppSelector } from '@/lib/hooks';
 
 const items = [
     {
@@ -47,9 +49,10 @@ const items = [
     },
 ];
 
-function SideBar({ collapsed, setCollapsed }) {
+function SideBar({ collapsed, setCollapsed, logout }) {
     const router = useRouter();
     const routeName = usePathname();
+    const userData = useAppSelector(state => state.user.entities);
 
     // Get the current path and use it to set the selected key
     const selectedKey = items.find(item => item.path === routeName)?.key;
@@ -130,6 +133,21 @@ function SideBar({ collapsed, setCollapsed }) {
                     items={items}
                     onClick={handleNavigation}
                 ></Menu>
+
+                <div
+                    style={{
+                        marginTop: '20vh',
+                        // marginBottom: '1rem',
+                        padding: '0.5rem 1rem',
+                        // borderTop: '1px solid #f0f0f0',
+                    }}
+                >
+                    <CustomPopover
+                        collapsed={collapsed}
+                        userData={userData}
+                        logout={logout}
+                    />
+                </div>
             </div>
         </Sider>
     );
