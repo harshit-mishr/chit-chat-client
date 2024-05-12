@@ -1,5 +1,5 @@
 'use client';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import {
     Button,
     Form,
@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import style from '../auth.module.css';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import apiService from '@/service/apiService';
 
 const layout = {
@@ -20,8 +20,8 @@ const layout = {
     wrapperCol: { span: 16 },
 };
 
-export default function VerifyEmail() {
-    const searchParams = useSearchParams();
+function VerifyEmailInner() {
+    const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get('id');
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -74,68 +74,67 @@ export default function VerifyEmail() {
     };
 
     return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <ConfigProvider
-                theme={{
-                    algorithm: theme.darkAlgorithm,
-                    components: {
-                        Button: {
-                            colorPrimary: '#00b96b',
-                            algorithm: true, // Enable algorithm
-                        },
-                        Input: {
-                            colorPrimary: '#eb2f96',
-                            backgroundColor: '#fff',
-                            algorithm: true, // Enable algorithm
-                        },
+        <ConfigProvider
+            theme={{
+                algorithm: theme.darkAlgorithm,
+                components: {
+                    Button: {
+                        colorPrimary: '#00b96b',
+                        algorithm: true, // Enable algorithm
                     },
-                }}
-            >
-                <Spin spinning={isLoading}>
-                    <div className={style.container}>
-                        <Card style={{ maxWidth: '400px', margin: '0 auto' }}>
-                            <h2>Verify your email</h2>
-                            <br />
-                            <Form
-                                layout={'vertical'}
-                                form={form}
-                                name="normal_login"
-                                className="login-form"
-                                initialValues={{ remember: true }}
-                                onFinish={onFinish}
-                                onFinishFailed={onFinishFailed}
+                    Input: {
+                        colorPrimary: '#eb2f96',
+                        backgroundColor: '#fff',
+                        algorithm: true, // Enable algorithm
+                    },
+                },
+            }}
+        >
+            <Spin spinning={isLoading}>
+                <div className={style.container}>
+                    <Card style={{ maxWidth: '400px', margin: '0 auto' }}>
+                        <h2>Verify your email</h2>
+                        <br />
+                        <Form
+                            layout={'vertical'}
+                            form={form}
+                            name="normal_login"
+                            className="login-form"
+                            initialValues={{ remember: true }}
+                            onFinish={onFinish}
+                            onFinishFailed={onFinishFailed}
+                        >
+                            <Form.Item
+                                label="Otp"
+                                name="otp"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input your OTP!',
+                                    },
+                                ]}
                             >
-                                <Form.Item
-                                    label="Otp"
-                                    name="otp"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please input your OTP!',
-                                        },
-                                    ]}
-                                >
-                                    <Input />
-                                </Form.Item>
+                                <Input />
+                            </Form.Item>
 
-                                <Form.Item>
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
-                                        block
-                                    >
-                                        Verify Email
-                                    </Button>
-                                    Or{' '}
-                                    <Link href="/auth/sign-up">
-                                        SignUp now!
-                                    </Link>
-                                </Form.Item>
-                            </Form>
-                        </Card>
-                    </div>
-                </Spin>
-            </ConfigProvider>
+                            <Form.Item>
+                                <Button type="primary" htmlType="submit" block>
+                                    Verify Email
+                                </Button>
+                                Or <Link href="/auth/sign-up">SignUp now!</Link>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </div>
+            </Spin>
+        </ConfigProvider>
+    );
+}
+
+export default function VerifyEmail() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <VerifyEmailInner />
         </Suspense>
     );
 }
