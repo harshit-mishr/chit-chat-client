@@ -14,9 +14,12 @@ import style from '../auth.module.css';
 import Link from 'next/link';
 import apiService from '../../../service/apiService';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/lib/hooks';
+import { setUserData } from '@/lib/features/user/userSlice';
 
 export default function Login() {
     const router = useRouter();
+    const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
     const onFinish = async values => {
@@ -32,13 +35,14 @@ export default function Login() {
             );
             if (response.status === 200 || response.status === 201) {
                 const data = response?.data && response?.data;
-                console.log('Login successful!');
+                console.log('Login successful!', data);
                 form.resetFields();
                 console.log('REsponse from api', response.data);
                 const { accessToken, refreshToken } = data;
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
                 console.log('redirecting to home');
+                dispatch(setUserData(data));
                 // Hide loading message
                 loading();
                 // Show success message

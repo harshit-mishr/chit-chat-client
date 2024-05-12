@@ -7,7 +7,7 @@ import CustomAvatar from '../CustomAvatar/CustomAvatar';
 function CustomPopover({ logout, collapsed }) {
     const router = useRouter();
 
-    const userData = useAppSelector(state => state.user.entities);
+    const userData = useAppSelector(state => state.user.userData);
     const content = (
         <div
             style={{

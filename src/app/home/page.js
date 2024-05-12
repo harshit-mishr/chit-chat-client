@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import withAuth from '@/utils/authentication/withAuth';
 import MainLayout from '@/components/CommonLayout/layout';
-import { Layout, message, theme } from 'antd';
+import { Input, Layout, message, theme } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { fetchUserData } from '@/lib/features/user/userSlice';
+// import { fetchUserData } from '@/lib/features/user/userSlice';
+import CreatePost from '@/components/CreatePost/CreatePost';
 
 const { Content } = Layout;
 
@@ -14,23 +15,6 @@ const Home = () => {
     } = theme.useToken();
 
     const [collapsed, setCollapsed] = useState(false);
-    const dispatch = useAppDispatch();
-
-    // Select the user data and loading state from the store
-    const loading = useAppSelector(state => state.user.loading);
-    const error = useAppSelector(state => state.user.error);
-
-    useEffect(() => {
-        dispatch(fetchUserData());
-    }, []);
-
-    useEffect(() => {
-        if (error) {
-            message.error(`Error: ${error}`);
-        }
-    }, []);
-
-    if (loading === 'loading') return <div>Loading...</div>;
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -50,7 +34,9 @@ const Home = () => {
                         maxHeight: '100vh',
                         background: colorBgContainer,
                     }}
-                ></div>
+                >
+                    <CreatePost />
+                </div>
             </Content>
         </MainLayout>
     );
