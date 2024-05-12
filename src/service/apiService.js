@@ -2,8 +2,9 @@ import axios from 'axios';
 
 const BASE_URL =
     process.env.NODE_ENV === 'production'
-        ? 'http://13.235.70.214/api' //futre domain
-        : 'http://localhost:8000/api';
+        ? 'https://chit-chat-server-one.vercel.app/api' //vercel
+        : // 'http://13.235.70.214/api' //aws domain
+          'http://localhost:8000/api';
 
 // Create an instance of axios for routes that require a token
 const apiWithToken = axios.create({
