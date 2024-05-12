@@ -1,5 +1,6 @@
 'use client';
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
+
 import {
     Button,
     Form,
@@ -12,7 +13,7 @@ import {
 } from 'antd';
 import style from '../auth.module.css';
 import Link from 'next/link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import apiService from '@/service/apiService';
 
 const layout = {
@@ -20,8 +21,8 @@ const layout = {
     wrapperCol: { span: 16 },
 };
 
-export default function VerifyEmail() {
-    const searchParams = useSearchParams();
+function VerifyEmailInner() {
+    const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get('id');
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -136,6 +137,14 @@ export default function VerifyEmail() {
                     </div>
                 </Spin>
             </ConfigProvider>
+        </Suspense>
+    );
+}
+
+export default function VerifyEmail() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <VerifyEmailInner />
         </Suspense>
     );
 }
