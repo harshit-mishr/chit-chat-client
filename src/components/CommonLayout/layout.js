@@ -60,7 +60,11 @@ function MainLayout({ children, collapsed, setCollapsed, userData }) {
                     //     />
                     // </Sider>
                 }
-                <SideBar collapsed={collapsed} setCollapsed={setCollapsed} />
+                <SideBar
+                    collapsed={collapsed}
+                    setCollapsed={setCollapsed}
+                    logout={logout}
+                />
 
                 {children}
             </Layout>
