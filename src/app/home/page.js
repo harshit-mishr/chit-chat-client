@@ -29,10 +29,11 @@ const Home = () => {
             >
                 <div
                     style={{
-                        padding: 24,
+                        padding: 45,
                         minHeight: '100vh',
                         maxHeight: '100vh',
                         background: colorBgContainer,
+                        border: '1px solid #424242',
                     }}
                 >
                     <CreatePost />

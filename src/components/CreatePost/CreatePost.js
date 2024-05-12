@@ -1,18 +1,21 @@
-import { Button, Input, Tooltip } from 'antd';
-import React, { useRef } from 'react';
+import { Button, Image, Input, Tooltip } from 'antd';
+import React, { useRef, useState } from 'react';
 import styles from './style.module.css';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
-import { FileImageOutlined } from '@ant-design/icons';
+import { FileImageOutlined, CloseOutlined } from '@ant-design/icons';
+import apiService from '@/service/apiService';
 const { TextArea } = Input;
 function CreatePost() {
     const uploadRef = useRef(null);
+    const [localFile, setLocalFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [description, setDescription] = useState('');
 
     const onChange = e => {
-        console.log(e);
+        setDescription(e.target.value);
     };
 
     const handleFileChange = event => {
-        setEditData({ ...editData, profilePicture: true });
         const file = event.target.files[0];
         setLocalFile(file);
 
@@ -25,11 +28,40 @@ function CreatePost() {
         reader.readAsDataURL(file);
     };
 
+    const onSubmit = async () => {
+        console.log('submited');
+        const formData = new FormData();
+        formData.append('description', description);
+        if (localFile) {
+            formData.append('file', localFile);
+        }
+
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
+
+        try {
+            const response = await apiService.post(
+                '/post/create',
+                formData,
+                true,
+                true,
+            );
+            console.log('REsponse from api', response.data);
+            setSelectedFile(null);
+            setDescription('');
+            uploadRef.current.value = '';
+            setLocalFile(null);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
     return (
         <div
             style={{
                 border: '1px solid #424242',
-                padding: '2rem',
+                padding: '1rem',
                 borderRadius: '1rem',
             }}
         >
@@ -66,6 +98,48 @@ function CreatePost() {
                             // boxhadow: none;
                         }}
                     />
+                    {selectedFile && (
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                position: 'relative',
+                                width: '100%',
+                                border: '1px solid #424242',
+                                borderRadius: '0.5rem',
+                                padding: '0.5rem',
+                                marginTop: '1rem',
+                            }}
+                        >
+                            <Button
+                                style={{
+                                    position: 'absolute',
+                                    top: '0rem',
+                                    right: '0rem',
+                                    zIndex: '1',
+                                }}
+                                onClick={() => {
+                                    setSelectedFile(null);
+                                    setLocalFile(null);
+                                    uploadRef.current.value = '';
+                                }}
+                                type="primary"
+                                shape="circle"
+                                icon={<CloseOutlined />}
+                            />
+                            <Image
+                                preview={true}
+                                alt="Post picture"
+                                src={selectedFile}
+                                width={200}
+                                style={{
+                                    width: '100%',
+                                    height: 'auto',
+                                    borderRadius: '0.5rem',
+                                }}
+                            />
+                        </div>
+                    )}
                     <div
                         style={{
                             display: 'flex',
@@ -81,6 +155,7 @@ function CreatePost() {
                     >
                         <Tooltip title="Upload Photo">
                             <Button
+                                onClick={() => uploadRef.current.click()}
                                 type="primary"
                                 shape="circle"
                                 icon={<FileImageOutlined />}
@@ -95,7 +170,9 @@ function CreatePost() {
                             />
                         </Tooltip>
 
-                        <Button type="primary">Post</Button>
+                        <Button onClick={onSubmit} type="primary">
+                            Post
+                        </Button>
                     </div>
                 </div>
             </div>
