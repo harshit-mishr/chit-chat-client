@@ -1,0 +1,106 @@
+import { Button, Input, Tooltip } from 'antd';
+import React, { useRef } from 'react';
+import styles from './style.module.css';
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import { FileImageOutlined } from '@ant-design/icons';
+const { TextArea } = Input;
+function CreatePost() {
+    const uploadRef = useRef(null);
+
+    const onChange = e => {
+        console.log(e);
+    };
+
+    const handleFileChange = event => {
+        setEditData({ ...editData, profilePicture: true });
+        const file = event.target.files[0];
+        setLocalFile(file);
+
+        // Read the file as a data URL
+        const reader = new FileReader(); //one issue that when select one pic then after that unselect and again select then no change
+        reader.onload = () => {
+            // Set the result of FileReader as the selected file
+            setSelectedFile(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    return (
+        <div
+            style={{
+                border: '1px solid #424242',
+                padding: '2rem',
+                borderRadius: '1rem',
+            }}
+        >
+            <div
+                style={{
+                    display: 'flex',
+                    gap: '1rem',
+                }}
+            >
+                <CustomAvatar
+                    style={{
+                        backgroundColor: '#141414',
+                        border: '1px solid #424242',
+                        borderColor: '#424242',
+                    }}
+                    shape="round"
+                    size="large"
+                />
+                <div style={{ width: '100%' }}>
+                    <TextArea
+                        className={styles.noFocus}
+                        placeholder="Whats on your mind?"
+                        allowClear
+                        onChange={onChange}
+                        maxLength={100}
+                        autoSize={{ minRows: 3 }}
+                        style={{
+                            resize: 'none',
+                            overflowY: 'none',
+                            WebkitOverflowScrolling: 'touch',
+                            overscrollBehaviorY: 'none',
+                            width: '100%',
+                            outline: 'none',
+                            // boxhadow: none;
+                        }}
+                    />
+                    <div
+                        style={{
+                            display: 'flex',
+                            gap: '1rem',
+                            // border: '1px solid #424242',
+                            // padding: '0.5rem 3rem',
+                            marginTop: '1rem',
+                            // paddingRight: '0rem',
+
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Tooltip title="Upload Photo">
+                            <Button
+                                type="primary"
+                                shape="circle"
+                                icon={<FileImageOutlined />}
+                            />
+                            <input
+                                ref={uploadRef}
+                                style={{ display: 'none' }}
+                                id="profilePic"
+                                type="file"
+                                onChange={handleFileChange}
+                                accept="image/*" // Optionally restrict accepted file types
+                            />
+                        </Tooltip>
+
+                        <Button type="primary">Post</Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default CreatePost;

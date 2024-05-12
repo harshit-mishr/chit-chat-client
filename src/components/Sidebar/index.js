@@ -52,7 +52,7 @@ const items = [
 function SideBar({ collapsed, setCollapsed, logout }) {
     const router = useRouter();
     const routeName = usePathname();
-    const userData = useAppSelector(state => state.user.entities);
+    const userData = useAppSelector(state => state.user.userData);
 
     // Get the current path and use it to set the selected key
     const selectedKey = items.find(item => item.path === routeName)?.key;

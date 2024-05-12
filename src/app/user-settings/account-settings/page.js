@@ -2,7 +2,7 @@
 import CommonHeader from '@/components/CommonHeader/CommonHeader';
 import MainLayout from '@/components/CommonLayout/layout';
 import withAuth from '@/utils/authentication/withAuth';
-import { Button, Form, Image, Input, Layout, theme } from 'antd';
+import { Button, Form, Image, Input, Layout, message, theme } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import {
@@ -12,7 +12,8 @@ import {
     UploadOutlined,
 } from '@ant-design/icons';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { updateUserData } from '@/lib/features/user/userSlice';
+import { setUserData, updateUserData } from '@/lib/features/user/userSlice';
+import apiService from '@/service/apiService';
 
 function AccountSetting() {
     const {
@@ -28,7 +29,7 @@ function AccountSetting() {
         city: false,
     };
     const { Content } = Layout;
-    const userData = useAppSelector(state => state.user.entities);
+    const userData = useAppSelector(state => state.user.userData);
     const [collapsed, setCollapsed] = useState(false);
     const [editData, setEditData] = useState(edit);
     const [userFilledData, setUserFilledData] = useState(userData);
@@ -59,7 +60,9 @@ function AccountSetting() {
         reader.readAsDataURL(file);
     };
 
-    const onSubmit = type => {
+    const onSubmit = async type => {
+        const loading = message.loading('Updating data up...', 0);
+
         const validTypes = [
             'profilePicture',
             'username',
@@ -68,14 +71,38 @@ function AccountSetting() {
             'country',
             'city',
         ];
+        const formData = new FormData();
         if (validTypes.includes(type)) {
-            const formData = new FormData();
             if (type === 'profilePicture') {
                 formData.append('file', localFile);
             } else {
                 formData.append(type, userFilledData[type]);
             }
-            dispatch(updateUserData(formData));
+        }
+
+        try {
+            const response = await apiService.put('/user/update', formData);
+            if (response.status === 200 || response.status === 201) {
+                const data = response?.data && response?.data;
+                dispatch(setUserData(data));
+                console.log('data', data);
+                console.log('Updated successful!');
+
+                loading();
+                message.success('Updated successfully...');
+            } else {
+                console.error('Update failed:', response);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle error here
+            loading();
+            const errorMessage =
+                error?.response?.data?.message ||
+                error?.message ||
+                'Error logging in';
+            console.error('Error logging in:', errorMessage);
+            message.error(`Error logging in: ${errorMessage}`);
         }
     };
 
