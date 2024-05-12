@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
     Button,
     Form,
@@ -74,59 +74,68 @@ export default function VerifyEmail() {
     };
 
     return (
-        <ConfigProvider
-            theme={{
-                algorithm: theme.darkAlgorithm,
-                components: {
-                    Button: {
-                        colorPrimary: '#00b96b',
-                        algorithm: true, // Enable algorithm
+        <Suspense fallback={<div>Loading...</div>}>
+            <ConfigProvider
+                theme={{
+                    algorithm: theme.darkAlgorithm,
+                    components: {
+                        Button: {
+                            colorPrimary: '#00b96b',
+                            algorithm: true, // Enable algorithm
+                        },
+                        Input: {
+                            colorPrimary: '#eb2f96',
+                            backgroundColor: '#fff',
+                            algorithm: true, // Enable algorithm
+                        },
                     },
-                    Input: {
-                        colorPrimary: '#eb2f96',
-                        backgroundColor: '#fff',
-                        algorithm: true, // Enable algorithm
-                    },
-                },
-            }}
-        >
-            <Spin spinning={isLoading}>
-                <div className={style.container}>
-                    <Card style={{ maxWidth: '400px', margin: '0 auto' }}>
-                        <h2>Verify your email</h2>
-                        <br />
-                        <Form
-                            layout={'vertical'}
-                            form={form}
-                            name="normal_login"
-                            className="login-form"
-                            initialValues={{ remember: true }}
-                            onFinish={onFinish}
-                            onFinishFailed={onFinishFailed}
-                        >
-                            <Form.Item
-                                label="Otp"
-                                name="otp"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your OTP!',
-                                    },
-                                ]}
+                }}
+            >
+                <Spin spinning={isLoading}>
+                    <div className={style.container}>
+                        <Card style={{ maxWidth: '400px', margin: '0 auto' }}>
+                            <h2>Verify your email</h2>
+                            <br />
+                            <Form
+                                layout={'vertical'}
+                                form={form}
+                                name="normal_login"
+                                className="login-form"
+                                initialValues={{ remember: true }}
+                                onFinish={onFinish}
+                                onFinishFailed={onFinishFailed}
                             >
-                                <Input />
-                            </Form.Item>
+                                <Form.Item
+                                    label="Otp"
+                                    name="otp"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your OTP!',
+                                        },
+                                    ]}
+                                >
+                                    <Input />
+                                </Form.Item>
 
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" block>
-                                    Verify Email
-                                </Button>
-                                Or <Link href="/auth/sign-up">SignUp now!</Link>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </div>
-            </Spin>
-        </ConfigProvider>
+                                <Form.Item>
+                                    <Button
+                                        type="primary"
+                                        htmlType="submit"
+                                        block
+                                    >
+                                        Verify Email
+                                    </Button>
+                                    Or{' '}
+                                    <Link href="/auth/sign-up">
+                                        SignUp now!
+                                    </Link>
+                                </Form.Item>
+                            </Form>
+                        </Card>
+                    </div>
+                </Spin>
+            </ConfigProvider>
+        </Suspense>
     );
 }
