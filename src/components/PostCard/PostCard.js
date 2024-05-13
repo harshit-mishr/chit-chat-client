@@ -5,13 +5,15 @@ import {
     MessageOutlined,
     ShareAltOutlined,
 } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Meta } = Card;
 
-function PostCard({ post }) {
-    console.log('post -->', post);
+function PostCard({ post, setCommentModalVisible }) {
     const { description, image, likes, comments, share, author, createdAt } =
         post;
+
+    const postDate = moment(createdAt).fromNow();
 
     return (
         <Card
@@ -21,7 +23,10 @@ function PostCard({ post }) {
                 <span key="like">
                     <HeartOutlined /> {likes}
                 </span>,
-                <span key="comment">
+                <span
+                    key="comment"
+                    onClick={() => setCommentModalVisible(true)}
+                >
                     <MessageOutlined /> {comments.length}
                 </span>,
                 <span key="share">
@@ -47,7 +52,7 @@ function PostCard({ post }) {
                                     fontSize: '0.8rem',
                                 }}
                             >
-                                {new Date(createdAt).toDateString()}
+                                {postDate}
                             </span>
                         </div>
                     }

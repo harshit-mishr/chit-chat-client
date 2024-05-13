@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import CreatePost from '@/components/CreatePost/CreatePost';
 import apiService from '@/service/apiService';
 import PostCard from '@/components/PostCard/PostCard';
+import CustomModal from '@/components/CustomModal/CustomModal';
 
 const { Content } = Layout;
 
@@ -20,6 +21,7 @@ const Home = () => {
 
     const [collapsed, setCollapsed] = useState(false);
     const [allPost, setAllPost] = useState([]);
+    const [commentModalVisible, setCommentModalVisible] = useState(false);
 
     const getAllPosts = async () => {
         try {
@@ -36,36 +38,47 @@ const Home = () => {
     }, [refresh]);
 
     return (
-        <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
-            <Content
-                style={{
-                    margin: '0rem',
-                    marginTop: '1rem',
-                    marginLeft: '2rem',
-                    transition: 'margin-left margin-right 0.9s ease-in-out',
-                    maxWidth: '50vw',
-                }}
-            >
-                <div
+        <>
+            <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
+                <Content
                     style={{
-                        padding: 45,
-                        minHeight: '100vh',
-                        maxHeight: 'max-content',
-                        // background: colorBgContainer,
-                        // border: '1px solid #424242',
+                        margin: '0rem',
+                        marginTop: '1rem',
+                        marginLeft: collapsed ? '10vh' : '20rem',
+                        transition: 'margin-left margin-right 0.9s ease-in-out',
+                        maxWidth: '50vw',
                     }}
                 >
-                    <CreatePost setRefresh={setRefresh} refresh={refresh} />
-                    <div>
-                        {allPost.map(post => (
-                            <div key={post._id}>
-                                <PostCard post={post} />
-                            </div>
-                        ))}
+                    <div
+                        style={{
+                            padding: 45,
+                            minHeight: '100vh',
+                            maxHeight: 'max-content',
+                            // background: colorBgContainer,
+                            // border: '1px solid #424242',
+                        }}
+                    >
+                        <CreatePost setRefresh={setRefresh} refresh={refresh} />
+                        <div>
+                            {allPost.map(post => (
+                                <div key={post._id}>
+                                    <PostCard
+                                        setCommentModalVisible={
+                                            setCommentModalVisible
+                                        }
+                                        post={post}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </Content>
-        </MainLayout>
+                </Content>
+            </MainLayout>
+            <CustomModal
+                setCommentModalVisible={setCommentModalVisible}
+                commentModalVisible={commentModalVisible}
+            />
+        </>
     );
 };
 export default withAuth(Home);
