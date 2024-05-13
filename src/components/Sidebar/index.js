@@ -88,7 +88,17 @@ function SideBar({ collapsed, setCollapsed, logout }) {
             collapsible
             collapsed={collapsed}
             onCollapse={value => setCollapsed(value)}
-            style={{ width: '20rem' }}
+            style={{
+                width: '20rem',
+                height: '100vh',
+                overflow: 'auto',
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                zIndex: 1,
+                borderRight: '1px solid #424242',
+            }}
         >
             <div
                 style={{
