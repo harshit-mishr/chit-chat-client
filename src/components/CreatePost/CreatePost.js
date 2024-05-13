@@ -5,7 +5,21 @@ import CustomAvatar from '../CustomAvatar/CustomAvatar';
 import { FileImageOutlined, CloseOutlined } from '@ant-design/icons';
 import apiService from '@/service/apiService';
 const { TextArea } = Input;
-function CreatePost({ setRefresh, refresh }) {
+
+/**
+ *
+ * @param {CreatePost & CreateComment  }
+ * @returns
+ */
+function CreatePost({
+    setRefresh,
+    refresh,
+    placeholder,
+    buttonText,
+    minRows,
+    submitHandler,
+    targetId,
+}) {
     const uploadRef = useRef(null);
     const [localFile, setLocalFile] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
@@ -41,17 +55,17 @@ function CreatePost({ setRefresh, refresh }) {
             formData.append('file', localFile);
         }
 
+        if (targetId) {
+            //this is for comment as postId is needed
+            formData.append('postId', targetId);
+        }
+
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
         }
 
         try {
-            const response = await apiService.post(
-                '/post/create',
-                formData,
-                true,
-                true,
-            );
+            const response = await submitHandler(formData);
             console.log('REsponse from api', response.data);
             setSelectedFile(null);
             setDescription('');
@@ -59,7 +73,7 @@ function CreatePost({ setRefresh, refresh }) {
             setLocalFile(null);
             setRefresh(!refresh);
             setLoading(false);
-            message.success('Post created successfully');
+            // message.success('Post created successfully');
         } catch (error) {
             console.error('Error:', error);
             const errorMessage =
@@ -69,6 +83,9 @@ function CreatePost({ setRefresh, refresh }) {
 
             console.error('Error creating post:', errorMessage);
             message.error(errorMessage);
+            setRefresh(!refresh);
+            setLoading(false);
+        } finally {
             setRefresh(!refresh);
             setLoading(false);
         }
@@ -103,12 +120,12 @@ function CreatePost({ setRefresh, refresh }) {
                 <div style={{ width: '100%' }}>
                     <TextArea
                         className={styles.noFocus}
-                        placeholder="Whats on your mind?"
+                        placeholder={placeholder || 'Whats on your mind?'}
                         allowClear
                         onChange={onChange}
                         value={description}
                         maxLength={250}
-                        autoSize={{ minRows: 3 }}
+                        autoSize={{ minRows: minRows || 3 }}
                         style={{
                             resize: 'none',
                             overflowY: 'none',
@@ -196,7 +213,7 @@ function CreatePost({ setRefresh, refresh }) {
                             onClick={onSubmit}
                             type="primary"
                         >
-                            Post
+                            {buttonText || 'Post'}
                         </Button>
                     </div>
                 </div>

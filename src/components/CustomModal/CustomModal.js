@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Modal } from 'antd';
-const CustomModal = ({ setCommentModalVisible, commentModalVisible }) => {
+import PostCard from '../PostCard/PostCard';
+import CreatePost from '../CreatePost/CreatePost';
+const CustomModal = ({
+    setCommentModalVisible,
+    commentModalVisible,
+    modalData,
+    title,
+    submitHandler,
+    setRefresh,
+    refresh,
+}) => {
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [modalText, setModalText] = useState('Content of the modal');
     console.log('commentModalVisible', commentModalVisible);
@@ -25,13 +35,24 @@ const CustomModal = ({ setCommentModalVisible, commentModalVisible }) => {
                 // </Button>
             }
             <Modal
-                title="Title"
+                title={title}
                 open={commentModalVisible}
                 onOk={handleOk}
                 confirmLoading={confirmLoading}
                 onCancel={handleCancel}
             >
-                <p>{modalText}</p>
+                <PostCard post={modalData} />
+                <div style={{ marginTop: '1rem' }}>
+                    <CreatePost
+                        placeholder="Write a comment"
+                        buttonText="Comment"
+                        minRows={1}
+                        submitHandler={submitHandler}
+                        setRefresh={setRefresh}
+                        refresh={refresh}
+                        targetId={modalData._id}
+                    />
+                </div>
             </Modal>
         </>
     );

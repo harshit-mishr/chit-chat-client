@@ -9,7 +9,7 @@ import moment from 'moment';
 
 const { Meta } = Card;
 
-function PostCard({ post, setCommentModalVisible }) {
+function PostCard({ post, setCommentModalVisible, setCommentModalData }) {
     const { description, image, likes, comments, share, author, createdAt } =
         post;
 
@@ -25,7 +25,10 @@ function PostCard({ post, setCommentModalVisible }) {
                 </span>,
                 <span
                     key="comment"
-                    onClick={() => setCommentModalVisible(true)}
+                    onClick={() => {
+                        setCommentModalVisible(true);
+                        setCommentModalData(post);
+                    }}
                 >
                     <MessageOutlined /> {comments.length}
                 </span>,

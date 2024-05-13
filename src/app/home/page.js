@@ -22,6 +22,7 @@ const Home = () => {
     const [collapsed, setCollapsed] = useState(false);
     const [allPost, setAllPost] = useState([]);
     const [commentModalVisible, setCommentModalVisible] = useState(false);
+    const [commentModalData, setCommentModalData] = useState({});
 
     const getAllPosts = async () => {
         try {
@@ -36,6 +37,33 @@ const Home = () => {
     useEffect(() => {
         getAllPosts();
     }, [refresh]);
+
+    const createPost = async data => {
+        const response = await apiService.post(
+            '/post/create',
+            data,
+            true,
+            true,
+        );
+        if (response.status === 200) {
+            message.success('Post created successfully');
+        }
+        return response;
+    };
+    const createComment = async data => {
+        const response = await apiService.post(
+            '/comment/create',
+            data,
+            true,
+            true,
+        );
+        if (response.status === 200) {
+            message.success('Comment created successfully');
+            setCommentModalVisible(false);
+            setCommentModalData({});
+        }
+        return response;
+    };
 
     return (
         <>
@@ -58,13 +86,20 @@ const Home = () => {
                             // border: '1px solid #424242',
                         }}
                     >
-                        <CreatePost setRefresh={setRefresh} refresh={refresh} />
+                        <CreatePost
+                            setRefresh={setRefresh}
+                            refresh={refresh}
+                            submitHandler={createPost}
+                        />
                         <div>
                             {allPost.map(post => (
                                 <div key={post._id}>
                                     <PostCard
                                         setCommentModalVisible={
                                             setCommentModalVisible
+                                        }
+                                        setCommentModalData={
+                                            setCommentModalData
                                         }
                                         post={post}
                                     />
@@ -75,8 +110,13 @@ const Home = () => {
                 </Content>
             </MainLayout>
             <CustomModal
+                title="Comment"
                 setCommentModalVisible={setCommentModalVisible}
                 commentModalVisible={commentModalVisible}
+                modalData={commentModalData}
+                submitHandler={createComment}
+                setRefresh={setRefresh}
+                refresh={refresh}
             />
         </>
     );
