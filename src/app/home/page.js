@@ -16,6 +16,8 @@ const Home = () => {
         token: { colorBgContainer },
     } = theme.useToken();
 
+    const [refresh, setRefresh] = useState(false);
+
     const [collapsed, setCollapsed] = useState(false);
     const [allPost, setAllPost] = useState([]);
 
@@ -31,7 +33,7 @@ const Home = () => {
     console.log('allPost', allPost);
     useEffect(() => {
         getAllPosts();
-    }, []);
+    }, [refresh]);
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -53,7 +55,7 @@ const Home = () => {
                         // border: '1px solid #424242',
                     }}
                 >
-                    <CreatePost />
+                    <CreatePost setRefresh={setRefresh} refresh={refresh} />
                     <div>
                         {allPost.map(post => (
                             <div key={post._id}>

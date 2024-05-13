@@ -15,30 +15,8 @@ function PostCard({ post }) {
 
     return (
         <Card
+            hoverable
             style={{ width: '100%', marginTop: 16 }}
-            cover={
-                image && (
-                    <div
-                        style={{
-                            padding: '2rem',
-                            // border: '1px solid #424242',
-                            textAlign: 'center',
-                            borderRadius: '0.5rem',
-                        }}
-                    >
-                        <Image
-                            preview={false}
-                            alt="example"
-                            src={image}
-                            style={{
-                                width: '60%',
-                                height: 'auto',
-                                borderRadius: '0.5rem',
-                            }}
-                        />
-                    </div>
-                )
-            }
             actions={[
                 <span key="like">
                     <HeartOutlined /> {likes}
@@ -51,14 +29,50 @@ function PostCard({ post }) {
                 </span>,
             ]}
         >
-            <Meta
-                avatar={<Avatar src={author.profilePicture} />}
-                title={author.username}
-                description={description}
-            />
-            <p style={{ marginTop: 12, color: 'gray' }}>
-                {new Date(createdAt).toDateString()}
-            </p>
+            <div>
+                <Meta
+                    avatar={<Avatar src={author.profilePicture} />}
+                    title={
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            {author.username}
+                            <span
+                                style={{
+                                    marginLeft: 5,
+                                    color: 'gray',
+                                    fontSize: '0.8rem',
+                                }}
+                            >
+                                {new Date(createdAt).toDateString()}
+                            </span>
+                        </div>
+                    }
+                    description={description}
+                />
+                <div
+                    style={{
+                        marginTop: '1rem',
+                        // border: '1px solid gray',
+                    }}
+                >
+                    {image && (
+                        <Image
+                            preview={false}
+                            src={image}
+                            alt="Post Image"
+                            width="80%"
+                            style={{
+                                marginLeft: '10vh',
+                                borderRadius: '0.5rem',
+                            }}
+                        />
+                    )}
+                </div>
+            </div>
         </Card>
     );
 }
