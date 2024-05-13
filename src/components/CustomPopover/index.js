@@ -52,7 +52,9 @@ function CustomPopover({ logout, collapsed }) {
                 {!collapsed && (
                     <div>
                         <h4>{userData?.username}</h4>
-                        <p>{userData?.email}</p>
+                        <p style={{ color: 'gray', fontSize: '0.8rem' }}>
+                            {userData?.email}
+                        </p>
                     </div>
                 )}
             </div>

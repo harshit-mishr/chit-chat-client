@@ -3,7 +3,7 @@ import { Avatar } from 'antd';
 import React from 'react';
 
 function CustomAvatar({ imageSource, style, shape, size }) {
-    const userData = useAppSelector(state => state.user.entities);
+    const userData = useAppSelector(state => state.user.userData);
     return (
         <Avatar
             style={{

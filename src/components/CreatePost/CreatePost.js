@@ -1,15 +1,16 @@
-import { Button, Image, Input, Tooltip, theme } from 'antd';
+import { Button, Image, Input, Tooltip, message, theme } from 'antd';
 import React, { useRef, useState } from 'react';
 import styles from './style.module.css';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
 import { FileImageOutlined, CloseOutlined } from '@ant-design/icons';
 import apiService from '@/service/apiService';
 const { TextArea } = Input;
-function CreatePost() {
+function CreatePost({ setRefresh, refresh }) {
     const uploadRef = useRef(null);
     const [localFile, setLocalFile] = useState(null);
     const [selectedFile, setSelectedFile] = useState(null);
     const [description, setDescription] = useState('');
+    const [loading, setLoading] = useState(false);
     const {
         token: { colorBgContainer },
     } = theme.useToken();
@@ -33,6 +34,7 @@ function CreatePost() {
 
     const onSubmit = async () => {
         console.log('submited');
+        setLoading(true);
         const formData = new FormData();
         formData.append('description', description);
         if (localFile) {
@@ -55,8 +57,20 @@ function CreatePost() {
             setDescription('');
             uploadRef.current.value = '';
             setLocalFile(null);
+            setRefresh(!refresh);
+            setLoading(false);
+            message.success('Post created successfully');
         } catch (error) {
             console.error('Error:', error);
+            const errorMessage =
+                error?.response?.data?.message ||
+                error?.message ||
+                'Error creating post';
+
+            console.error('Error creating post:', errorMessage);
+            message.error(errorMessage);
+            setRefresh(!refresh);
+            setLoading(false);
         }
     };
 
@@ -75,22 +89,25 @@ function CreatePost() {
                     gap: '1rem',
                 }}
             >
-                <CustomAvatar
-                    style={{
-                        backgroundColor: '#141414',
-                        border: '1px solid #424242',
-                        borderColor: '#424242',
-                    }}
-                    shape="round"
-                    size="large"
-                />
+                <div>
+                    <CustomAvatar
+                        style={{
+                            backgroundColor: '#141414',
+                            border: '1px solid #424242',
+                            borderColor: '#424242',
+                        }}
+                        shape="round"
+                        size="large"
+                    />
+                </div>
                 <div style={{ width: '100%' }}>
                     <TextArea
                         className={styles.noFocus}
                         placeholder="Whats on your mind?"
                         allowClear
                         onChange={onChange}
-                        maxLength={100}
+                        value={description}
+                        maxLength={250}
                         autoSize={{ minRows: 3 }}
                         style={{
                             resize: 'none',
@@ -174,7 +191,11 @@ function CreatePost() {
                             />
                         </Tooltip>
 
-                        <Button onClick={onSubmit} type="primary">
+                        <Button
+                            loading={loading}
+                            onClick={onSubmit}
+                            type="primary"
+                        >
                             Post
                         </Button>
                     </div>
