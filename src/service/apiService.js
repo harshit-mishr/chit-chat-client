@@ -79,8 +79,11 @@ apiWithoutToken.interceptors.response.use(
 );
 
 const apiService = {
-    get: (url, params, requiresToken = true) =>
-        (requiresToken ? apiWithToken : apiWithoutToken).get(url, { params }),
+    get: (
+        url,
+        params,
+        requiresToken = true, //params is optional and this ? query string
+    ) => (requiresToken ? apiWithToken : apiWithoutToken).get(url, { params }),
     post: (url, body, requiresToken = true, isFormData = false) => {
         const config = isFormData
             ? { headers: { 'Content-Type': 'multipart/form-data' } }

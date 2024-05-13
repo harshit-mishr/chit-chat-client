@@ -25,12 +25,13 @@ function PostCard({ post, setCommentModalVisible, setCommentModalData }) {
                 </span>,
                 <span
                     key="comment"
-                    onClick={() => {
-                        setCommentModalVisible(true);
-                        setCommentModalData(post);
+                    onClick={e => {
+                        e.stopPropagation();
+                        setCommentModalVisible && setCommentModalVisible(true);
+                        setCommentModalData && setCommentModalData(post);
                     }}
                 >
-                    <MessageOutlined /> {comments.length}
+                    <MessageOutlined /> {comments?.length}
                 </span>,
                 <span key="share">
                     <ShareAltOutlined /> {share}
