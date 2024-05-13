@@ -9,6 +9,7 @@ import CreatePost from '@/components/CreatePost/CreatePost';
 import apiService from '@/service/apiService';
 import PostCard from '@/components/PostCard/PostCard';
 import CustomModal from '@/components/CustomModal/CustomModal';
+import { useRouter } from 'next/navigation';
 
 const { Content } = Layout;
 
@@ -16,6 +17,8 @@ const Home = () => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
+
+    const router = useRouter();
 
     const [refresh, setRefresh] = useState(false);
 
@@ -93,7 +96,12 @@ const Home = () => {
                         />
                         <div>
                             {allPost.map(post => (
-                                <div key={post._id}>
+                                <div
+                                    key={post._id}
+                                    onClick={() =>
+                                        router.push(`/post/${post._id}`)
+                                    }
+                                >
                                     <PostCard
                                         setCommentModalVisible={
                                             setCommentModalVisible
