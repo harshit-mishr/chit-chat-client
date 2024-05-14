@@ -28,9 +28,21 @@ const Home = () => {
     const [commentModalData, setCommentModalData] = useState({});
 
     const getAllPosts = async () => {
+        // const filter = {  //if want to use filter in api
+        //     //if want to use filter in api
+        //     likes: { $gt: 100 },
+        //     tags: { $in: ['tag1', 'tag2'] },
+        // };
+
+        const filter = {};
+
         try {
-            const response = await apiService.get('/post', {}, true);
-            setAllPost(response.data);
+            const response = await apiService.get(
+                '/post',
+                { page: 1, limit: 10, filter: JSON.stringify(filter) || null },
+                true,
+            );
+            setAllPost(response && response.data && response.data.data);
         } catch (error) {
             console.error('Error:', error);
         }

@@ -25,8 +25,12 @@ export default function Post() {
 
     const getPost = async () => {
         try {
-            const response = await apiService.get(`/post/${id}`, {}, true);
-            setPost(response.data);
+            const response = await apiService.get(
+                '/post/' + id,
+                { page: 1, limit: 10 },
+                true,
+            );
+            setPost(response.data.data);
         } catch (error) {
             console.error('Error:', error);
         }
