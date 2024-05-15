@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import withAuth from '@/utils/authentication/withAuth';
 import MainLayout from '@/components/CommonLayout/layout';
-import { Input, Layout, message, theme } from 'antd';
+import { Layout, Spin, message, theme } from 'antd';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 // import { fetchUserData } from '@/lib/features/user/userSlice';
 import CreatePost from '@/components/CreatePost/CreatePost';
@@ -10,6 +10,7 @@ import apiService from '@/service/apiService';
 import PostCard from '@/components/PostCard/PostCard';
 import CustomModal from '@/components/CustomModal/CustomModal';
 import { useRouter } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
 
 const { Content } = Layout;
 
@@ -26,8 +27,11 @@ const Home = () => {
     const [allPost, setAllPost] = useState([]);
     const [commentModalVisible, setCommentModalVisible] = useState(false);
     const [commentModalData, setCommentModalData] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loadingNextPage, setLoadingNextPage] = useState(false);
+    const [totalPost, setTotalPost] = useState(0);
 
-    const getAllPosts = async () => {
+    const getAllPosts = async (page = 1) => {
         // const filter = {  //if want to use filter in api
         //     //if want to use filter in api
         //     likes: { $gt: 100 },
@@ -39,19 +43,41 @@ const Home = () => {
         try {
             const response = await apiService.get(
                 '/post',
-                { page: 1, limit: 10, filter: JSON.stringify(filter) || null },
+                {
+                    page: page,
+                    limit: 10,
+                    filter: JSON.stringify(filter) || null,
+                },
                 true,
             );
-            setAllPost(response && response.data && response.data.data);
+
+            setTotalPost(response.data.total);
+            setAllPost(
+                page === 1
+                    ? response.data.data
+                    : [...allPost, ...response.data.data],
+            );
+            setLoadingNextPage(false);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    console.log('allPost', allPost);
+    const { ref, inView } = useInView({
+        threshold: 0.5, // Observe when 50% of the element is visible
+        disabled: totalPost === allPost.length, // Disable when no more posts
+    });
+
     useEffect(() => {
-        getAllPosts();
-    }, [refresh]);
+        getAllPosts(currentPage);
+    }, [refresh, currentPage]);
+
+    useEffect(() => {
+        if (inView && totalPost > allPost.length) {
+            setLoadingNextPage(true);
+            setCurrentPage(prevPage => prevPage + 1);
+        }
+    }, [inView]);
 
     const createPost = async data => {
         const response = await apiService.post(
@@ -61,6 +87,7 @@ const Home = () => {
             true,
         );
         if (response.status === 200) {
+            setCurrentPage(1);
             message.success('Post created successfully');
         }
         return response;
@@ -106,7 +133,7 @@ const Home = () => {
                             refresh={refresh}
                             submitHandler={createPost}
                         />
-                        <div>
+                        <div style={{ minHeight: '100vh', paddingBottom: 100 }}>
                             {allPost.map(post => (
                                 <div
                                     key={post._id}
@@ -125,6 +152,15 @@ const Home = () => {
                                     />
                                 </div>
                             ))}
+                        </div>
+
+                        <div style={{ textAlign: 'center' }} ref={ref}>
+                            {loadingNextPage && (
+                                <Spin tip="Loading" size="large" />
+                            )}
+                            {totalPost === allPost.length && (
+                                <p style={{ color: 'gray' }}>No more post</p>
+                            )}
                         </div>
                     </div>
                 </Content>

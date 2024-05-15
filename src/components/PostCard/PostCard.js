@@ -78,6 +78,7 @@ function PostCard({ post, setCommentModalVisible, setCommentModalData }) {
                                 marginLeft: '10vh',
                                 borderRadius: '0.5rem',
                             }}
+                            loading="lazy"
                         />
                     )}
                 </div>
