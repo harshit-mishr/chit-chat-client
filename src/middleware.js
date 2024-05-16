@@ -18,12 +18,7 @@ export function middleware(request) {
     console.log('Middleware executed...');
 
     // List of your application's routes
-    const routes = [
-        '/messages',
-        '/notifications',
-        '/profile',
-        '/user-settings/undefined',
-    ];
+    const routes = ['/messages', '/notifications', '/user-settings/undefined'];
 
     // Redirect to /auth/login when path is /
     if (request.nextUrl.pathname === '/') {
