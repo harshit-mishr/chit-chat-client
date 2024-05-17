@@ -34,7 +34,7 @@ function Profile() {
         getMyPosts();
     }, []);
 
-    const [fileList, setFileList] = useState([{}]);
+    const [isPreviewVisible, setPreviewVisible] = useState(false);
     const handleChange = async info => {
         const loading = message.loading('Updating display picture ...', 0);
         console.log('info', info);
@@ -137,16 +137,38 @@ function Profile() {
                             router.push('/user-settings/account-settings');
                         }}
                     />
-
-                    <Image
-                        src={userData?.displayPicture}
-                        alt="Profile Picture"
-                        style={{
-                            height: '20rem',
-                            width: '43vw',
-                        }}
-                        preview={false}
-                    />
+                    {userData?.displayPicture ? (
+                        <Image
+                            src={userData?.displayPicture}
+                            alt="Profile Picture"
+                            style={{
+                                height: '20rem',
+                                width: '43vw',
+                                objectFit: 'cover', // Ensures full width with aspect ratio preserved
+                                borderRadius: 'inherit', // Inherit border radius from parent if needed
+                            }}
+                        />
+                    ) : (
+                        <div
+                            style={{
+                                height: '20rem',
+                                width: '43vw',
+                                border: '3px solid grey',
+                                // background: 'grey',
+                                display: 'grid',
+                                placeContent: 'center',
+                            }}
+                        >
+                            <Upload {...props}>
+                                <Button
+                                    style={{ width: '100%' }}
+                                    icon={<UploadOutlined />}
+                                >
+                                    Upload
+                                </Button>
+                            </Upload>
+                        </div>
+                    )}
 
                     <div
                         style={{
@@ -171,13 +193,23 @@ function Profile() {
                     </div>
                 </div>
 
-                <div style={{ marginTop: '5rem', padding: 45, paddingTop: 0 }}>
-                    <h3>{userData?.username?.toUpperCase()}</h3>
-                    <p style={{ color: 'gray' }}>{userData?.email}</p>
+                <div
+                    style={{
+                        marginTop: '5rem',
+                        padding: 45,
+                        paddingTop: 0,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <div>
+                        <h3>{userData?.username?.toUpperCase()}</h3>
+                        <p style={{ color: 'gray' }}>{userData?.email}</p>
 
-                    <p style={{ marginTop: '1rem', color: 'gray' }}>
-                        {userData?.about || 'No bio'}
-                    </p>
+                        <p style={{ marginTop: '1rem', color: 'gray' }}>
+                            {userData?.about || 'No bio'}
+                        </p>
+                    </div>
                     <div
                         style={{
                             marginTop: '1rem',
