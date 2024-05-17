@@ -145,6 +145,7 @@ function Profile() {
                             height: '20rem',
                             width: '43vw',
                         }}
+                        preview={false}
                     />
 
                     <div
