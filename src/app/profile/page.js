@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { AimOutlined, UploadOutlined } from '@ant-design/icons';
 import { setUserData } from '@/lib/features/user/userSlice';
+import { useInView } from 'react-intersection-observer';
+import PostCard from '@/components/PostCard/PostCard';
 const { Content } = Layout;
 
 function Profile() {
@@ -15,24 +17,52 @@ function Profile() {
     const userData = useAppSelector(state => state.user.userData);
     const dispatch = useAppDispatch();
     const router = useRouter();
-    async function getMyPosts() {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loadingNextPage, setLoadingNextPage] = useState(false);
+    const [totalPost, setTotalPost] = useState(0);
+    const [allPost, setAllPost] = useState([]);
+
+    async function getMyPosts(page) {
         const filter = {};
 
         try {
             const response = await apiService.get(
                 '/user/posts',
-                { page: 1, limit: 10, filter: JSON.stringify(filter) || null },
+                {
+                    page: page,
+                    limit: 10,
+                    filter: JSON.stringify(filter) || null,
+                },
                 true,
             );
-            setAllPost(response && response.data && response.data.data);
+            console.log('response', response);
+            setTotalPost(response.data.total);
+            setAllPost(
+                page === 1
+                    ? response.data.data
+                    : [...allPost, ...response.data.data],
+            );
+            setLoadingNextPage(false);
         } catch (error) {
             console.error('Error:', error);
         }
     }
 
+    const { ref, inView } = useInView({
+        threshold: 0.5, // Observe when 50% of the element is visible
+        disabled: totalPost === allPost.length, // Disable when no more posts
+    });
+
     useEffect(() => {
-        getMyPosts();
-    }, []);
+        getMyPosts(currentPage);
+    }, [currentPage]);
+
+    useEffect(() => {
+        if (inView && totalPost > allPost.length) {
+            setLoadingNextPage(true);
+            setCurrentPage(prevPage => prevPage + 1);
+        }
+    }, [inView]);
 
     const [isPreviewVisible, setPreviewVisible] = useState(false);
     const handleChange = async info => {
@@ -68,34 +98,6 @@ function Profile() {
             console.error('Error logging in:', errorMessage);
             message.error(`Error logging in: ${errorMessage}`);
         }
-
-        // try {
-        //     const response = await fetch(
-        //         'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
-        //         {
-        //             method: 'POST',
-        //             body: formData,
-        //         },
-        //     );
-        //     const data = await response.json();
-        //     let newFileList = [...info.fileList];
-
-        //     // 1. Limit the number of uploaded files
-        //     // Only to show two recent uploaded files, and old ones will be replaced by the new
-        //     newFileList = newFileList.slice(-2);
-
-        //     // 2. Read from response and show file link
-        //     newFileList = newFileList.map(file => {
-        //         if (file.response) {
-        //             // Component will show file.url as link
-        //             file.url = data.url;
-        //         }
-        //         return file;
-        //     });
-        //     setFileList(newFileList);
-        // } catch (error) {
-        //     console.error('Error:', error);
-        // }
     };
 
     const props = {
@@ -224,6 +226,27 @@ function Profile() {
                             {userData?.country || 'No country'}
                         </p>
                     </div>
+                </div>
+
+                <div
+                    style={{
+                        minHeight: '100vh',
+                        padding: 45,
+                        paddingBottom: 100,
+                    }}
+                >
+                    {allPost.map(post => (
+                        <div
+                            key={post._id}
+                            onClick={() => router.push(`/post/${post._id}`)}
+                        >
+                            <PostCard
+                                // setCommentModalVisible={setCommentModalVisible}
+                                // setCommentModalData={setCommentModalData}
+                                post={post}
+                            />
+                        </div>
+                    ))}
                 </div>
             </Content>
         </MainLayout>
