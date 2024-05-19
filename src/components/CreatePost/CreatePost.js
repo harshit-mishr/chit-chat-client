@@ -71,7 +71,7 @@ function CreatePost({
             setDescription('');
             uploadRef.current.value = '';
             setLocalFile(null);
-            setRefresh(!refresh);
+            // setRefresh(!refresh);
             setLoading(false);
             // message.success('Post created successfully');
         } catch (error) {
@@ -83,10 +83,10 @@ function CreatePost({
 
             console.error('Error creating post:', errorMessage);
             message.error(errorMessage);
-            setRefresh(!refresh);
+            // setRefresh(!refresh);
             setLoading(false);
         } finally {
-            setRefresh(!refresh);
+            // setRefresh(!refresh);
             setLoading(false);
         }
     };

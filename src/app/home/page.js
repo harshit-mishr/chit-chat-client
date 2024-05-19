@@ -31,7 +31,7 @@ const Home = ({ socket }) => {
     const [loadingNextPage, setLoadingNextPage] = useState(false);
     const [totalPost, setTotalPost] = useState(0);
 
-    const getAllPosts = async (page = 1) => {
+    const getAllPosts = async (page = 1, append = false) => {
         // const filter = {  //if want to use filter in api
         //     //if want to use filter in api
         //     likes: { $gt: 100 },
@@ -52,11 +52,22 @@ const Home = ({ socket }) => {
             );
 
             setTotalPost(response.data.total);
-            setAllPost(
-                page === 1
-                    ? response.data.data
-                    : [...allPost, ...response.data.data],
-            );
+            setAllPost(prevPosts => {
+                const newPosts = response.data.data;
+                const combinedPosts = append
+                    ? [...prevPosts, ...newPosts]
+                    : newPosts;
+
+                // Filter out duplicates
+                const uniquePosts = combinedPosts.reduce((acc, post) => {
+                    if (!acc.find(item => item._id === post._id)) {
+                        acc.push(post);
+                    }
+                    return acc;
+                }, []);
+
+                return uniquePosts;
+            });
             setLoadingNextPage(false);
         } catch (error) {
             console.error('Error:', error);
@@ -69,8 +80,8 @@ const Home = ({ socket }) => {
     });
 
     useEffect(() => {
-        getAllPosts(currentPage);
-    }, [refresh, currentPage]);
+        getAllPosts(currentPage, true);
+    }, [currentPage]);
 
     useEffect(() => {
         if (inView && totalPost > allPost.length) {
@@ -79,6 +90,24 @@ const Home = ({ socket }) => {
         }
     }, [inView]);
 
+    useEffect(() => {
+        socket.on('newPost', data => {
+            // Add the new post to the current list of posts
+            console.log('data on new post', data);
+            setAllPost(prevPosts => {
+                const postExists = prevPosts.some(
+                    post => post._id === data._id,
+                );
+                console.log('postExists', postExists);
+                return postExists ? prevPosts : [data, ...prevPosts];
+            });
+            console.log('newPost', data);
+        });
+
+        return () => {
+            socket.off('newPost');
+        };
+    }, []);
     const createPost = async data => {
         const response = await apiService.post(
             '/post/create',
@@ -87,8 +116,9 @@ const Home = ({ socket }) => {
             true,
         );
         if (response.status === 200) {
-            setCurrentPage(1);
+            setCurrentPage(1); // Reset to page 1
             message.success('Post created successfully');
+            getAllPosts(1, false); // Fetch the first page without appending
         }
         return response;
     };
