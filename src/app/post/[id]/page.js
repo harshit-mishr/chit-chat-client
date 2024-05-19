@@ -9,10 +9,11 @@ import { filter, isEmpty } from 'lodash';
 import CreatePost from '@/components/CreatePost/CreatePost';
 import CommonHeader from '@/components/CommonHeader/CommonHeader';
 import { useInView } from 'react-intersection-observer';
+import withAuth from '@/utils/authentication/withAuth';
 
 const Content = Layout;
 
-export default function Post() {
+function Post({ socket }) {
     const { id } = useParams();
     const router = useRouter();
 
@@ -46,7 +47,7 @@ export default function Post() {
         getPost();
     }, []);
 
-    const getAllComments = async (page = 1) => {
+    const getAllComments = async (page = 1, append = false) => {
         try {
             const response = await apiService.get(
                 '/comment',
@@ -55,11 +56,22 @@ export default function Post() {
             );
 
             setTotalComment(response.data.total);
-            setComments(
-                page === 1
-                    ? response.data.data
-                    : [...comments, ...response.data.data],
-            );
+            setComments(prevPosts => {
+                const newPosts = response.data.data;
+                const combinedPosts = append
+                    ? [...prevPosts, ...newPosts]
+                    : newPosts;
+
+                // Filter out duplicates
+                const uniquePosts = combinedPosts.reduce((acc, post) => {
+                    if (!acc.find(item => item._id === post._id)) {
+                        acc.push(post);
+                    }
+                    return acc;
+                }, []);
+
+                return uniquePosts;
+            });
             setLoadingNextPage(false);
         } catch (error) {
             console.error('Error:', error);
@@ -67,7 +79,7 @@ export default function Post() {
     };
 
     useEffect(() => {
-        getAllComments(currentPage);
+        getAllComments(currentPage, true);
     }, [id, refresh, currentPage]);
 
     const { ref, inView } = useInView({
@@ -90,10 +102,35 @@ export default function Post() {
             true,
         );
         if (response.status === 200) {
+            setCurrentPage(1); // Reset to page 1
             message.success('Comment created successfully');
+            getAllComments(1, false); // Fetch the first page without appending
         }
         return response;
     };
+
+    // Establish socket connection and listen for new comments
+    useEffect(() => {
+        socket.emit('joinPost', id);
+
+        socket.on('newComment', newComment => {
+            setComments(prevComments => {
+                const commentExists = prevComments.some(
+                    comment => comment._id === newComment._id,
+                );
+                console.log('commentExists', commentExists);
+                return commentExists
+                    ? prevComments
+                    : [newComment, ...prevComments];
+            });
+            getPost();
+        });
+
+        return () => {
+            socket.emit('leavePost', id);
+            socket.off('newComment');
+        };
+    }, [id]);
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -175,3 +212,5 @@ export default function Post() {
         </MainLayout>
     );
 }
+
+export default withAuth(Post);

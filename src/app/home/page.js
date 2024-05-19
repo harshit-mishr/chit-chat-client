@@ -130,9 +130,11 @@ const Home = ({ socket }) => {
             true,
         );
         if (response.status === 200) {
+            setCurrentPage(1); // Reset to page 1
             message.success('Comment created successfully');
             setCommentModalVisible(false);
             setCommentModalData({});
+            getAllPosts(1, false); // Fetch the first page without appending
         }
         return response;
     };
