@@ -14,7 +14,7 @@ import { useInView } from 'react-intersection-observer';
 
 const { Content } = Layout;
 
-const Home = () => {
+const Home = ({ socket }) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();

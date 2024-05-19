@@ -3,7 +3,7 @@ const nextConfig = {
     images: {
         domains: ['res.cloudinary.com'],
     },
-    // reactStrictMode: false, // React Strict Mode is off
+    reactStrictMode: false, // React Strict Mode is off
 };
 
 export default nextConfig;
