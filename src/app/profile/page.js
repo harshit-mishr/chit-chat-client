@@ -68,7 +68,7 @@ function Profile() {
     const handleChange = async info => {
         const loading = message.loading('Updating display picture ...', 0);
         console.log('info', info);
-        const formData = new FormData();
+        const formData = new FormData(); 
         formData.append('file', info.file.originFileObj);
 
         try {

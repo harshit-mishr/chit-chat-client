@@ -11,6 +11,7 @@ import PostCard from '@/components/PostCard/PostCard';
 import CustomModal from '@/components/CustomModal/CustomModal';
 import { useRouter } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
+import styles from './page.module.css';
 
 const { Content } = Layout;
 
@@ -110,23 +111,8 @@ const Home = ({ socket }) => {
     return (
         <>
             <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
-                <Content
-                    style={{
-                        margin: '0rem',
-                        marginTop: '1rem',
-                        marginLeft: collapsed ? '10vh' : '20rem',
-                        transition: 'margin-left margin-right 0.9s ease-in-out',
-                        maxWidth: '50vw',
-                    }}
-                >
-                    <div
-                        style={{
-                            padding: 45,
-                            minHeight: '100vh',
-                            maxHeight: 'max-content',
-                            // background: colorBgContainer,
-                            // border: '1px solid #424242',
-                        }}
+                <Content className= {styles.Content}>
+                    <div className={styles.ContentBox}
                     >
                         <CreatePost
                             setRefresh={setRefresh}

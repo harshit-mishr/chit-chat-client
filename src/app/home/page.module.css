@@ -1,12 +1,40 @@
-.home_card {
-	text-align: center;
-	padding: 20px;
-}
-
-.button {
-	margin-right: 10px;
-}
-
-.user_data {
-	margin-top: 20px;
-}
+.Content {
+		margin: 0rem;
+		margin-top: 1rem;
+		transition: margin-left 0.9s ease-in-out, margin-right 0.9s ease-in-out;
+		max-width: 50vw;
+	}
+	
+	.Content.collapsed {
+		margin-left: 10vh;
+	}
+	
+	.Content:not(.collapsed) {
+		margin-left: 20rem;
+	}
+	
+	.ContentBox {
+		padding: 45px;
+		min-height: 100vh;
+		max-height: max-content;
+	}
+	
+	@media screen and (max-width: 768px) {
+		.Content {
+			max-width: 100%;
+			margin-left: 0;
+		}
+	
+		.Content.collapsed {
+			margin-left: 0;
+		}
+	
+		.Content:not(.collapsed) {
+			margin-left: 0;
+		}
+	
+		.ContentBox {
+			padding: 20px;
+		}
+	}
+	

@@ -122,7 +122,7 @@ export default function Login() {
                             <Button type="primary" htmlType="submit" block>
                                 Log In
                             </Button>
-                            Or <Link href="/auth/sign-up">SignUp now!</Link>
+                            Or &nbsp;<Link href="/auth/sign-up">SignUp now!</Link>
                         </Form.Item>
                     </Form>
                 </Card>
