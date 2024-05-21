@@ -3,7 +3,7 @@
 import { redirect, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { Spin } from 'antd';
-import { connectSocket } from '../socket/socket';
+import { connectSocket, getSocket } from '../socket/socket';
 
 const withAuth = Component => {
     const WithAuth = props => {
@@ -20,35 +20,21 @@ const withAuth = Component => {
                 } else {
                     setIsLoading(false);
                     if (accessToken && !socket) {
-                        const newSocket = connectSocket(accessToken);
-
-                        newSocket.on('connect', () => {
-                            console.log('Connected to Socket.IO server');
-                        });
-
-                        newSocket.on('disconnect', () => {
-                            console.log('Disconnected from Socket.IO server');
-                        });
-
-                        setSocket(newSocket);
+                        if (accessToken && !getSocket()) {
+                            connectSocket(accessToken);
+                        }
                     }
                 }
             };
 
             checkAuth();
-
-            return () => {
-                if (socket) {
-                    socket.disconnect();
-                }
-            };
-        }, [socket]);
+        }, []);
 
         if (isLoading) {
             return <Spin spinning />;
         }
 
-        return <Component {...props} socket={socket} />;
+        return <Component {...props} socket={getSocket()} />;
     };
 
     return WithAuth;
