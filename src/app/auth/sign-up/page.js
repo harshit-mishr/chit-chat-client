@@ -34,7 +34,6 @@ const SignUp = () => {
         setIsLoading(true);
         try {
             const formData = new FormData();
-            console.log(formData, " form data");
             Object.entries(values).forEach(([key, value]) => {
                 formData.append(key, value);
             });
