@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import CustomPopover from '../CustomPopover';
 import { useAppSelector } from '@/lib/hooks';
+import styles from './Sider.module.css';
 
 const items = [
     {
