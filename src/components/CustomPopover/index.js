@@ -17,7 +17,7 @@ function CustomPopover({ logout, collapsed }) {
                 justifyContent: 'space-around',
             }}
         >
-            <Button block onClick={() => router.push('/profile/setting')}>
+            <Button block onClick={() => router.push('/profile')}>
                 Profile
             </Button>
             <Button block onClick={logout}>
