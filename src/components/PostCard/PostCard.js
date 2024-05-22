@@ -65,6 +65,7 @@ function PostCard({ post, setCommentModalVisible, setCommentModalData }) {
                 <div
                     style={{
                         marginTop: '1rem',
+                        textAlign:"center"
                         // border: '1px solid gray',
                     }}
                 >
@@ -75,7 +76,6 @@ function PostCard({ post, setCommentModalVisible, setCommentModalData }) {
                             alt="Post Image"
                             width="80%"
                             style={{
-                                marginLeft: '10vh',
                                 borderRadius: '0.5rem',
                             }}
                             loading="lazy"

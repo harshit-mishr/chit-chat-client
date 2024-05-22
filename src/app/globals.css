@@ -38,3 +38,23 @@ a {
 		color-scheme: initial;
 	}
 }
+
+.ant-layout-sider-trigger.hide {
+    display:none;
+}
+@media screen and (max-width: 768px) {
+    .page_Content__GWz0m:not(.page_collapsed__dU_7w) {
+        margin-left: 5rem !important;
+    }
+}
+@media screen and (max-width: 500px) {
+    .page_Content__GWz0m:not(.page_collapsed__dU_7w) {
+        margin-left: 0 !important;
+    }
+	:where(.css-dev-only-do-not-override-8imiip).ant-menu-inline-collapsed >.ant-menu-item {
+		padding-inline: 0 !important
+	}
+	.ant-menu-title-content {
+		display: none !important;
+	}
+}

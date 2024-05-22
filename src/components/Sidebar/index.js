@@ -1,5 +1,6 @@
 import { Avatar, Badge, Layout, Menu, Typography } from 'antd';
-import React from 'react';
+import React,{ useEffect } from 'react';
+import Style from "./Sider.module.css"
 const { Sider } = Layout;
 const { Title } = Typography;
 import {
@@ -15,36 +16,37 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import CustomPopover from '../CustomPopover';
 import { useAppSelector } from '@/lib/hooks';
+import styles from './Sider.module.css';
 
 const items = [
     {
         label: 'Home',
         key: '1',
-        icon: <HomeOutlined style={{ fontSize: '1.2rem' }} />,
+        icon: <HomeOutlined className={Style.menuLogo}  />,
         path: '/home',
     },
     {
         label: 'Chats',
         key: '2',
-        icon: <MessageOutlined style={{ fontSize: '1.2rem' }} />,
+        icon: <MessageOutlined className={Style.menuLogo} />,
         path: '/messages',
     },
     {
         label: 'Notifications',
         key: '3',
-        icon: <BellOutlined style={{ fontSize: '1.2rem' }} />,
+        icon: <BellOutlined className={Style.menuLogo} />,
         path: '/notifications',
     },
     {
         label: 'Profile',
         key: '4',
-        icon: <UserOutlined style={{ fontSize: '1.2rem' }} />,
+        icon: <UserOutlined className={Style.menuLogo} />,
         path: '/profile',
     },
     {
         label: 'Settings',
         key: '5',
-        icon: <SettingOutlined style={{ fontSize: '1.2rem' }} />,
+        icon: <SettingOutlined className={Style.menuLogo} />,
         path: '/user-settings/setting',
     },
 ];
@@ -53,7 +55,8 @@ function SideBar({ collapsed, setCollapsed, logout }) {
     const router = useRouter();
     const routeName = usePathname();
     const userData = useAppSelector(state => state.user.userData);
-
+    
+    
     // Get the current path and use it to set the selected key
     const selectedKey = items.find(item => item.path === routeName)?.key;
 
@@ -82,28 +85,42 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                 break;
         }
     };
+
+    const closeCollapse = () => {
+        const hideTrigerbtn = document.querySelector(".ant-layout-sider-trigger")
+        console.log(hideTrigerbtn,"asdasd")
+        if (window.innerWidth <= 768) {
+          console.log(window.innerWidth, "asdasd");
+          setCollapsed(true);
+          hideTrigerbtn.classList.add('hide')
+        } else {
+          console.log(window.innerWidth, "asdasd");
+          setCollapsed(false);
+          hideTrigerbtn.classList.remove('hide')
+        }
+      };
+    
+      useEffect(() => {
+        const handleResize = () => {
+          closeCollapse();
+        };
+        window.addEventListener('resize', handleResize);
+        closeCollapse();
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, []);
+
     return (
         <Sider
             width={'20rem'}
-            collapsible
+            collapsible 
             collapsed={collapsed}
+            className={Style.mainContainer}
             onCollapse={value => setCollapsed(value)}
-            style={{
-                width: '20rem',
-                height: '100vh',
-                overflow: 'auto',
-                position: 'fixed',
-                left: 0,
-                top: 0,
-                bottom: 0,
-                zIndex: 1,
-                borderRight: '1px solid #424242',
-            }}
         >
             <div
-                style={{
-                    marginTop: '1rem',
-                }}
+                className={Style.container}
             >
                 <div
                     style={{
@@ -120,6 +137,7 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                         height={50}
                         alt="logo"
                         style={{ overflow: 'hidden', borderRadius: '10%' }}
+                        className={Style.mainLogo}
                     />
 
                     {!collapsed && (
@@ -145,12 +163,7 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                 ></Menu>
 
                 <div
-                    style={{
-                        marginTop: '20vh',
-                        // marginBottom: '1rem',
-                        padding: '0.5rem 1rem',
-                        // borderTop: '1px solid #f0f0f0',
-                    }}
+                    className={Style.sidebar_popover}
                 >
                     <CustomPopover
                         collapsed={collapsed}
