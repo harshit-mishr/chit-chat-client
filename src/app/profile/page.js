@@ -5,8 +5,13 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import apiService from '@/service/apiService';
 import { Button, Image, Layout, Upload, message } from 'antd';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { AimOutlined, UploadOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+    AimOutlined,
+    UploadOutlined,
+    EditOutlined,
+    CloseOutlined,
+} from '@ant-design/icons';
 import { setUserData } from '@/lib/features/user/userSlice';
 import { useInView } from 'react-intersection-observer';
 import PostCard from '@/components/PostCard/PostCard';
@@ -21,6 +26,10 @@ function Profile() {
     const [loadingNextPage, setLoadingNextPage] = useState(false);
     const [totalPost, setTotalPost] = useState(0);
     const [allPost, setAllPost] = useState([]);
+    const uploadRef = useRef(null);
+    const [localFile, setLocalFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     async function getMyPosts(page) {
         const filter = {};
@@ -64,12 +73,31 @@ function Profile() {
         }
     }, [inView]);
 
-    const [isPreviewVisible, setPreviewVisible] = useState(false);
-    const handleChange = async info => {
+    const handleFileChange = event => {
+        const file = event.target.files[0];
+        setLocalFile(file);
+
+        // Read the file as a data URL
+        const reader = new FileReader(); //one issue that when select one pic then after that unselect and again select then no change
+        reader.onload = () => {
+            // Set the result of FileReader as the selected file
+            setSelectedFile(reader.result);
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const onSubmit = async () => {
         const loading = message.loading('Updating display picture ...', 0);
-        console.log('info', info);
+        setLoading(true);
         const formData = new FormData();
-        formData.append('file', info.file.originFileObj);
+
+        if (localFile) {
+            formData.append('file', localFile);
+        }
+
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
 
         try {
             const response = await apiService.put(
@@ -81,28 +109,30 @@ function Profile() {
                 dispatch(setUserData(data));
                 console.log('data', data);
                 console.log('Updated successful!');
-
                 loading();
+                setSelectedFile(null);
+                uploadRef.current.value = '';
+                setLocalFile(null);
+                setLoading(false);
                 message.success('Updated successfully...');
             } else {
                 console.error('Update failed:', response);
             }
         } catch (error) {
             console.error('Error:', error);
-            // Handle error here
-            loading();
             const errorMessage =
                 error?.response?.data?.message ||
                 error?.message ||
-                'Error logging in';
-            console.error('Error logging in:', errorMessage);
-            message.error(`Error logging in: ${errorMessage}`);
-        }
-    };
+                'Error creating post';
 
-    const props = {
-        onChange: handleChange,
-        multiple: false,
+            console.error('Error creating post:', errorMessage);
+            message.error(errorMessage);
+            // setRefresh(!refresh);
+            setLoading(false);
+        } finally {
+            // setRefresh(!refresh);
+            setLoading(false);
+        }
     };
 
     return (
@@ -139,17 +169,93 @@ function Profile() {
                             router.push('/user-settings/account-settings');
                         }}
                     />
-                    {userData?.displayPicture ? (
-                        <Image
-                            src={userData?.displayPicture}
-                            alt="Profile Picture"
+                    {userData?.displayPicture || selectedFile ? (
+                        <div
                             style={{
-                                height: '20rem',
-                                width: '43vw',
-                                objectFit: 'cover', // Ensures full width with aspect ratio preserved
-                                borderRadius: 'inherit', // Inherit border radius from parent if needed
+                                position: 'relative',
+                                textAlign: 'center',
                             }}
-                        />
+                        >
+                            <Image
+                                src={
+                                    selectedFile
+                                        ? selectedFile
+                                        : userData?.displayPicture
+                                }
+                                alt="Profile Picture"
+                                style={{
+                                    height: '20rem',
+                                    width: '43vw',
+                                    objectFit: 'cover', // Ensures full width with aspect ratio preserved
+                                    borderRadius: 'inherit', // Inherit border radius from parent if needed
+                                }}
+                            />
+                            <div
+                                style={{
+                                    position: 'absolute',
+                                    top: 0,
+                                    right: 0,
+                                    zIndex: 1,
+                                    width: '100%',
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    marginRight: '1rem',
+                                }}
+                            >
+                                {selectedFile ? (
+                                    <div
+                                        style={{
+                                            position: 'absolute',
+                                            top: '0rem',
+                                            right: '0rem',
+                                            zIndex: '1',
+                                            width: 'max-content',
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            gap: '0.5rem',
+                                        }}
+                                    >
+                                        <Button
+                                            style={{}}
+                                            onClick={() => {
+                                                setSelectedFile(null);
+                                                setLocalFile(null);
+                                                uploadRef.current.value = '';
+                                            }}
+                                            type="primary"
+                                            shape="circle"
+                                            icon={<CloseOutlined />}
+                                        />
+                                        <Button
+                                            loading={loading}
+                                            onClick={onSubmit}
+                                            type="primary"
+                                            shape="circle"
+                                            icon={<UploadOutlined />}
+                                        ></Button>
+                                    </div>
+                                ) : (
+                                    <Button
+                                        style={{}}
+                                        icon={<EditOutlined />}
+                                        onClick={() =>
+                                            uploadRef.current.click()
+                                        }
+                                        type="primary"
+                                        shape="circle"
+                                    ></Button>
+                                )}
+                                <input
+                                    ref={uploadRef}
+                                    style={{ display: 'none' }}
+                                    id="profilePic"
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    accept="image/*" // Optionally restrict accepted file types
+                                />
+                            </div>
+                        </div>
                     ) : (
                         <div
                             style={{
@@ -161,14 +267,21 @@ function Profile() {
                                 placeContent: 'center',
                             }}
                         >
-                            <Upload {...props}>
-                                <Button
-                                    style={{ width: '100%' }}
-                                    icon={<UploadOutlined />}
-                                >
-                                    Upload
-                                </Button>
-                            </Upload>
+                            <Button
+                                style={{ width: '100%' }}
+                                icon={<UploadOutlined />}
+                                onClick={() => uploadRef.current.click()}
+                            >
+                                Upload
+                            </Button>
+                            <input
+                                ref={uploadRef}
+                                style={{ display: 'none' }}
+                                id="profilePic"
+                                type="file"
+                                onChange={handleFileChange}
+                                accept="image/*" // Optionally restrict accepted file types
+                            />
                         </div>
                     )}
 
