@@ -1,9 +1,14 @@
 import axios from 'axios';
 
+const RenderUrl = 'https://chit-chat-server-1.onrender.com/api'; //Render
+const VercelUrl = 'https://chit-chat-server-one.vercel.app/api'; //Vercel //socket issue due to serverless
+const AWSUrl = 'http://13.235.70.214/api'; //AWS //EC2 instance shutdown
+
 const BASE_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://chit-chat-server-one.vercel.app/api' //vercel
-        : // 'http://13.235.70.214/api' //aws domain
+        ? RenderUrl //render
+        : //  VercelUrl //vercel
+          // AWSUrl //aws domain
           'http://localhost:8000/api';
 
 // Create an instance of axios for routes that require a token

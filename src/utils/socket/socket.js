@@ -1,9 +1,14 @@
 import { io, Socket } from 'socket.io-client';
 
+const RenderUrl = 'https://chit-chat-server-1.onrender.com'; //Render
+const VercelUrl = 'https://chit-chat-server-one.vercel.app'; //Vercel //socket issue
+const AWSUrl = 'http://13.235.70.214'; //AWS
+
 const BASE_URL =
     process.env.NODE_ENV === 'production'
-        ? 'https://chit-chat-server-one.vercel.app' //vercel
-        : // 'http://13.235.70.214/api' //aws domain
+        ? RenderUrl //render
+        : //  VercelUrl //vercel
+          // AWSUrl //aws domain
           'http://localhost:8000';
 
 const MAX_RECONNECTION_DELAY = 5000;
