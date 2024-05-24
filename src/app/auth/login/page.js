@@ -14,8 +14,8 @@ import style from '../auth.module.css';
 import Link from 'next/link';
 import apiService from '../../../service/apiService';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/lib/hooks';
-import { setUserData } from '@/lib/features/user/userSlice';
+import { setUserData } from '@/lib/redux/features/user/userSlice';
+import { useAppDispatch } from '@/lib/hooks/reduxHooks';
 
 export default function Login() {
     const router = useRouter();

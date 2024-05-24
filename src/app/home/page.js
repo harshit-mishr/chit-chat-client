@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import withAuth from '@/utils/authentication/withAuth';
 import MainLayout from '@/components/CommonLayout/layout';
 import { Layout, Spin, message, theme } from 'antd';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 // import { fetchUserData } from '@/lib/features/user/userSlice';
 import CreatePost from '@/components/CreatePost/CreatePost';
 import apiService from '@/service/apiService';

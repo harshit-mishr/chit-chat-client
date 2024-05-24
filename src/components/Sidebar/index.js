@@ -1,6 +1,6 @@
 import { Avatar, Badge, Layout, Menu, Typography } from 'antd';
-import React,{ useEffect } from 'react';
-import Style from "./Sider.module.css"
+import React, { useEffect } from 'react';
+import Style from './Sider.module.css';
 const { Sider } = Layout;
 const { Title } = Typography;
 import {
@@ -15,13 +15,13 @@ import LogoSVG from '../../utils/assets/logo/logo.png';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import CustomPopover from '../CustomPopover';
-import { useAppSelector } from '@/lib/hooks';
+import { useAppSelector } from '@/lib/hooks/reduxHooks';
 
 const items = [
     {
         label: 'Home',
         key: '1',
-        icon: <HomeOutlined className={Style.menuLogo}  />,
+        icon: <HomeOutlined className={Style.menuLogo} />,
         path: '/home',
     },
     {
@@ -54,8 +54,7 @@ function SideBar({ collapsed, setCollapsed, logout }) {
     const router = useRouter();
     const routeName = usePathname();
     const userData = useAppSelector(state => state.user.userData);
-    
-    
+
     // Get the current path and use it to set the selected key
     const selectedKey = items.find(item => item.path === routeName)?.key;
 
@@ -86,41 +85,41 @@ function SideBar({ collapsed, setCollapsed, logout }) {
     };
 
     const closeCollapse = () => {
-        const hideTrigerbtn = document.querySelector(".ant-layout-sider-trigger")
-        console.log(hideTrigerbtn,"asdasd")
+        const hideTrigerbtn = document.querySelector(
+            '.ant-layout-sider-trigger',
+        );
+        console.log(hideTrigerbtn, 'asdasd');
         if (window.innerWidth <= 768) {
-          console.log(window.innerWidth, "asdasd");
-          setCollapsed(true);
-          hideTrigerbtn.classList.add('hide')
+            console.log(window.innerWidth, 'asdasd');
+            setCollapsed(true);
+            hideTrigerbtn.classList.add('hide');
         } else {
-          console.log(window.innerWidth, "asdasd");
-          setCollapsed(false);
-          hideTrigerbtn.classList.remove('hide')
+            console.log(window.innerWidth, 'asdasd');
+            setCollapsed(false);
+            hideTrigerbtn.classList.remove('hide');
         }
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         const handleResize = () => {
-          closeCollapse();
+            closeCollapse();
         };
         window.addEventListener('resize', handleResize);
         closeCollapse();
         return () => {
-          window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleResize);
         };
-      }, []);
+    }, []);
 
     return (
         <Sider
             width={'20rem'}
-            collapsible 
+            collapsible
             collapsed={collapsed}
             className={Style.mainContainer}
             onCollapse={value => setCollapsed(value)}
         >
-            <div
-                className={Style.container}
-            >
+            <div className={Style.container}>
                 <div
                     style={{
                         display: 'flex',
@@ -161,9 +160,7 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                     onClick={handleNavigation}
                 ></Menu>
 
-                <div
-                    className={Style.sidebar_popover}
-                >
+                <div className={Style.sidebar_popover}>
                     <CustomPopover
                         collapsed={collapsed}
                         userData={userData}

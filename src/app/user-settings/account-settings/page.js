@@ -11,8 +11,11 @@ import {
     CloseOutlined,
     UploadOutlined,
 } from '@ant-design/icons';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setUserData, updateUserData } from '@/lib/features/user/userSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
+import {
+    setUserData,
+    updateUserData,
+} from '@/lib/redux/features/user/userSlice';
 import apiService from '@/service/apiService';
 
 function AccountSetting() {

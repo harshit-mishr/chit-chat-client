@@ -2,9 +2,9 @@
 // StoreProvider.js
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { makeStore } from '@/lib/store/store';
+import { makeStore } from '@/lib/redux/store/store';
 import { useRef } from 'react';
-import { increment } from '@/lib/features/counter/counterSlice'; //optional
+import { increment } from '@/lib/redux/features/counter/counterSlice'; //optional
 
 export default function StoreProvider({ children }) {
     const storeRef = useRef();

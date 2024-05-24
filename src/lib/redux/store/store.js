@@ -2,9 +2,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import counterReducer from '@/lib/features/counter/counterSlice';
-import navbarReducer from '@/lib/features/navbar/navbarSlice';
-import userReducer from '@/lib/features/user/userSlice';
+import counterReducer from '@/lib/redux/features/counter/counterSlice';
+import navbarReducer from '@/lib/redux/features/navbar/navbarSlice';
+import userReducer from '@/lib/redux/features/user/userSlice';
 
 const persistConfig = {
     key: 'root',
