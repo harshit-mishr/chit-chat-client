@@ -3,6 +3,7 @@ import './globals.css';
 import StoreProvider from './StoreProvider';
 import StyledComponentsRegistry from '@/lib/styleRegistry/AntdStyledRegistry';
 import ThemeProvider from '@/utils/theme/themeProvider';
+import { SocketContextProvider } from '@/lib/contexts/SocketContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,11 +17,13 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body className={inter.className}>
                 <StoreProvider>
-                    <ThemeProvider>
-                        <StyledComponentsRegistry>
-                            {children}
-                        </StyledComponentsRegistry>
-                    </ThemeProvider>
+                    <SocketContextProvider>
+                        <ThemeProvider>
+                            <StyledComponentsRegistry>
+                                {children}
+                            </StyledComponentsRegistry>
+                        </ThemeProvider>
+                    </SocketContextProvider>
                 </StoreProvider>
             </body>
         </html>

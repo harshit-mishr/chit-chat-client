@@ -59,6 +59,7 @@ const items = [
 ];
 
 const SampleHome = () => {
+    const { disconnectSocket } = useSocketContext();
     const [collapsed, setCollapsed] = useState(false);
     const {
         token: { colorBgContainer, borderRadiusLG },
@@ -169,6 +170,7 @@ const SampleHome = () => {
             console.log('response', response);
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
+            disconnectSocket();
             router.push('/auth/login');
         } catch (error) {
             console.error('Error:', error);
