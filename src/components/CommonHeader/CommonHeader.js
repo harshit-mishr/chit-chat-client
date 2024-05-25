@@ -10,9 +10,12 @@ function CommonHeader({
     onRightClick,
     leftIcon,
     backgroundColor,
+    style,
+    className,
 }) {
     return (
         <div
+            className={className && className}
             style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -22,6 +25,8 @@ function CommonHeader({
 
                 height: '10vh',
                 padding: '0.5rem 1rem',
+
+                ...style,
             }}
         >
             <div style={{ display: 'flex', alignItems: 'center', gap: '2vh' }}>
