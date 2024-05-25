@@ -116,7 +116,11 @@ function PeopleYouMayKnow() {
                 action: action,
             });
             console.log('response', response);
-            if (response.statusText === 'OK') {
+            if (
+                response.status === 200 ||
+                response.status === 201 ||
+                response.statusText === 'OK'
+            ) {
                 if (searchValue) {
                     console.log(
                         'searchValue should call handleSearch',
@@ -161,7 +165,11 @@ function PeopleYouMayKnow() {
                 action: 'unfollow',
             });
             console.log('response', response);
-            if (response.statusText === 'OK') {
+            if (
+                response.statusText === 'OK' ||
+                response.status === 200 ||
+                response.status === 201
+            ) {
                 if (searchValue) {
                     handleSearch(searchValue, currentPage);
                 } else {

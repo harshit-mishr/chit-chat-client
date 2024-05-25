@@ -92,7 +92,11 @@ function FollowingPeople() {
                 action: 'unfollow',
             });
             console.log('response', response);
-            if (response.statusText === 'OK') {
+            if (
+                response.statusText === 'OK' ||
+                response.status === 200 ||
+                response.status === 201
+            ) {
                 getPeopleYouMayKnow(currentPage, false);
                 message.success(item.username + ' Un-Followed successfully');
                 loading();
