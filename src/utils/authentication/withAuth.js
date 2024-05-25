@@ -34,7 +34,7 @@ const withAuth = Component => {
             return <Spin spinning />;
         }
 
-        return <Component {...props} socket={getSocket()} />;
+        return <Component {...props} />;
     };
 
     return WithAuth;

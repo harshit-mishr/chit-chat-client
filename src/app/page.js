@@ -1,10 +1,13 @@
 'use client';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
 import Image from 'next/image';
 import Login from './auth/login/page';
 import styles from './page.module.css';
 import { useSelector } from 'react-redux';
-import { decrement, increment } from '@/lib/features/counter/counterSlice';
+import {
+    decrement,
+    increment,
+} from '@/lib/redux/features/counter/counterSlice';
 
 export default function App() {
     const dispatch = useAppDispatch();

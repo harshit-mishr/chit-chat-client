@@ -1,53 +1,42 @@
 'use client';
-import React, { useState } from 'react';
-import {
-    Button,
-    Form,
-    Input,
-    Card,
-    ConfigProvider,
-    theme,
-    message,
-    Spin,
-} from 'antd';
-import style from '../auth.module.css';
-import Link from 'next/link';
-import apiService from '../../../service/apiService';
-import { useRouter } from 'next/navigation';
-import { setUserData } from '@/lib/redux/features/user/userSlice';
 import { useAppDispatch } from '@/lib/hooks/reduxHooks';
+import { Button, Card, Form, Input, Spin, message } from 'antd';
+import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { Suspense, useState } from 'react';
+import style from '../auth.module.css';
+import apiService from '@/service/apiService';
 
-export default function Login() {
+function ForgetPasswordInner() {
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');
     const router = useRouter();
-    const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
+
     const onFinish = async values => {
-        const loading = message.loading('Logging in...', 0);
+        const loading = message.loading('Updating your password...', 0);
         setIsLoading(true);
 
         try {
             const response = await apiService.post(
-                '/auth/login',
-                values,
+                '/auth/reset-password',
+                { ...values, _id: id },
                 false,
                 false,
             );
             if (response.status === 200 || response.status === 201) {
                 const data = response?.data && response?.data;
-                console.log('Login successful!', data);
+                console.log('User found successful!', data);
                 form.resetFields();
-                console.log('REsponse from api', response.data);
-                const { accessToken, refreshToken } = data;
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-                console.log('redirecting to home');
-                dispatch(setUserData(data));
                 // Hide loading message
                 loading();
                 // Show success message
-                message.success('Login successful! Redirecting to home...');
-                router.replace(`/home`);
+                message.success(
+                    'Password reset successful! Redirecting to Login page...',
+                );
+
+                router.push(`/auth/login`);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -58,8 +47,8 @@ export default function Login() {
                 error?.response?.data?.message ||
                 error?.message ||
                 'Error logging in';
-            console.error('Error logging in:', errorMessage);
-            message.error(`Error logging in: ${errorMessage}`);
+            console.error('Error Reset Password in:', errorMessage);
+            message.error(`Error Reset Password: ${errorMessage}`);
             // Display error message to user
             // form.setFields([{ name: "username", errors: [errorMessage] }]);
             // console.error("Error logging in:", error);
@@ -82,65 +71,62 @@ export default function Login() {
                         margin: '0 auto',
                     }}
                 >
-                    <h2>Welcome to Chit Chat</h2>
+                    <h2 style={{ textAlign: 'center' }}>Reset My Password</h2>
+                    <br />
                     <Form
                         layout={'vertical'}
                         form={form}
                         name="normal_login"
                         className="login-form"
-                        initialValues={{ remember: true }}
+                        initialValues={{ remember: false }}
                         onFinish={onFinish}
                         onFinishFailed={onFinishFailed}
                     >
                         <Form.Item
-                            label="Username"
-                            name="username"
+                            label="New Password"
+                            name="newPassword"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your username!',
+                                    message: 'Please input your new password!',
                                 },
                             ]}
                         >
-                            <Input />
+                            <Input placeholder="Enter your new password" />
                         </Form.Item>
-
                         <Form.Item
-                            label="Password"
-                            name="password"
+                            label="Confirm Password"
+                            name="confirmNewPassword"
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please input your password!',
+                                    message: 'Please input your new password!',
                                 },
                             ]}
                         >
-                            <Input.Password />
+                            <Input placeholder="Confirm your new password" />
                         </Form.Item>
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" block>
-                                Log In
+                                Submit
                             </Button>
                         </Form.Item>
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                justifyContent: 'space-between',
-                            }}
-                        >
-                            <Link href="/auth/find-my-account">
-                                Forget Password?
-                            </Link>
-                            <div>
-                                New User{'  '}
-                                <Link href="/auth/sign-up">SignUp now!</Link>
-                            </div>
+
+                        <div>
+                            Or <Link href="/auth/login">Login now!</Link>
                         </div>
                     </Form>
                 </Card>
             </div>
         </Spin>
+    );
+}
+
+export default function ForgetPassword() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <ForgetPasswordInner />
+        </Suspense>
     );
 }

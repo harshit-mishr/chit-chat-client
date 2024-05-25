@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import withAuth from '@/utils/authentication/withAuth';
 import MainLayout from '@/components/CommonLayout/layout';
 import { Layout, Spin, message, theme } from 'antd';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 // import { fetchUserData } from '@/lib/features/user/userSlice';
 import CreatePost from '@/components/CreatePost/CreatePost';
 import apiService from '@/service/apiService';
@@ -11,15 +10,18 @@ import PostCard from '@/components/PostCard/PostCard';
 import CustomModal from '@/components/CustomModal/CustomModal';
 import { useRouter } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
+import { useSocketContext } from '@/lib/contexts/SocketContext';
 
 const { Content } = Layout;
 
-const Home = ({ socket }) => {
+const Home = ({}) => {
     const {
         token: { colorBgContainer },
     } = theme.useToken();
 
     const router = useRouter();
+
+    const { socket } = useSocketContext();
 
     const [refresh, setRefresh] = useState(false);
 
@@ -91,7 +93,7 @@ const Home = ({ socket }) => {
     }, [inView]);
 
     useEffect(() => {
-        socket.on('newPost', data => {
+        socket?.on('newPost', data => {
             // Add the new post to the current list of posts
             console.log('data on new post', data);
             setAllPost(prevPosts => {
@@ -105,7 +107,7 @@ const Home = ({ socket }) => {
         });
 
         return () => {
-            socket.off('newPost');
+            socket?.off('newPost');
         };
     }, []);
     const createPost = async data => {

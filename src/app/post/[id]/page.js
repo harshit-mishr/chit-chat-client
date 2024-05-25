@@ -10,12 +10,14 @@ import CreatePost from '@/components/CreatePost/CreatePost';
 import CommonHeader from '@/components/CommonHeader/CommonHeader';
 import { useInView } from 'react-intersection-observer';
 import withAuth from '@/utils/authentication/withAuth';
+import { useSocketContext } from '@/lib/contexts/SocketContext';
 
 const Content = Layout;
 
-function Post({ socket }) {
+function Post({}) {
     const { id } = useParams();
     const router = useRouter();
+    const { socket } = useSocketContext();
 
     const {
         token: { colorBgContainer },
@@ -111,9 +113,9 @@ function Post({ socket }) {
 
     // Establish socket connection and listen for new comments
     useEffect(() => {
-        socket.emit('joinPost', id);
+        socket?.emit('joinPost', id);
 
-        socket.on('newComment', newComment => {
+        socket?.on('newComment', newComment => {
             setComments(prevComments => {
                 const commentExists = prevComments.some(
                     comment => comment._id === newComment._id,
@@ -127,8 +129,8 @@ function Post({ socket }) {
         });
 
         return () => {
-            socket.emit('leavePost', id);
-            socket.off('newComment');
+            socket?.emit('leavePost', id);
+            socket?.off('newComment');
         };
     }, [id]);
 

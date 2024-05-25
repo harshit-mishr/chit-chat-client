@@ -11,8 +11,8 @@ import {
     BellOutlined,
 } from '@ant-design/icons';
 import CustomPopover from '../CustomPopover';
-import { setSelectedOption } from '@/lib/features/navbar/navbarSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setSelectedOption } from '@/lib/redux/features/navbar/navbarSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
 import { usePathname, useRouter } from 'next/navigation';
 
 const { Header } = Layout;

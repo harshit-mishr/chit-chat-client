@@ -1,7 +1,7 @@
 'use client';
 import CommonHeader from '@/components/CommonHeader/CommonHeader';
 import MainLayout from '@/components/CommonLayout/layout';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
 import apiService from '@/service/apiService';
 import { Button, Image, Layout, Upload, message } from 'antd';
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ import {
     EditOutlined,
     CloseOutlined,
 } from '@ant-design/icons';
-import { setUserData } from '@/lib/features/user/userSlice';
+import { setUserData } from '@/lib/redux/features/user/userSlice';
 import { useInView } from 'react-intersection-observer';
 import PostCard from '@/components/PostCard/PostCard';
 const { Content } = Layout;
