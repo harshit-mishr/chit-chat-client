@@ -118,8 +118,15 @@ function PeopleYouMayKnow() {
             console.log('response', response);
             if (response.statusText === 'OK') {
                 if (searchValue) {
+                    console.log(
+                        'searchValue should call handleSearch',
+                        searchValue,
+                    );
                     handleSearch(searchValue, currentPage);
                 } else {
+                    console.log(
+                        'searchValue empty should call getPeopleYouMayKnow',
+                    );
                     getPeopleYouMayKnow(currentPage, false);
                 }
 
