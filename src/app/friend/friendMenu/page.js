@@ -4,6 +4,7 @@ import {
     DoubleRightOutlined,
     UsergroupAddOutlined,
     UserAddOutlined,
+    UserSwitchOutlined,
     TeamOutlined,
 } from '@ant-design/icons';
 import withAuth from '@/utils/authentication/withAuth';
@@ -38,6 +39,11 @@ function FriendMenu() {
             label: 'My Friends',
             icon: <TeamOutlined style={{ fontSize: '1.5rem' }} />,
         },
+        {
+            key: '4',
+            label: 'Following',
+            icon: <UserSwitchOutlined style={{ fontSize: '1.5rem' }} />,
+        },
     ];
 
     const handleNavigation = e => {
@@ -53,6 +59,10 @@ function FriendMenu() {
             case '3':
                 console.log('My Friends');
                 router.push('/friend/my-friends');
+                break;
+            case '4':
+                console.log('My Friends');
+                router.push('/friend/following');
                 break;
             default:
                 break;
