@@ -10,6 +10,7 @@ import {
     SettingOutlined,
     UserOutlined,
     BellOutlined,
+    UsergroupAddOutlined,
 } from '@ant-design/icons';
 import LogoSVG from '../../utils/assets/logo/logo.png';
 import Image from 'next/image';
@@ -37,14 +38,20 @@ const items = [
         path: '/notifications',
     },
     {
-        label: 'Profile',
+        label: 'Friends',
         key: '4',
+        icon: <UsergroupAddOutlined className={Style.menuLogo} />,
+        path: '/friend/friendMenu',
+    },
+    {
+        label: 'Profile',
+        key: '5',
         icon: <UserOutlined className={Style.menuLogo} />,
         path: '/profile',
     },
     {
         label: 'Settings',
-        key: '5',
+        key: '6',
         icon: <SettingOutlined className={Style.menuLogo} />,
         path: '/user-settings/setting',
     },
@@ -73,10 +80,14 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                 router.push('/notifications');
                 break;
             case '4':
+                console.log('notifications');
+                router.push('/friend/friendMenu');
+                break;
+            case '5':
                 console.log('profile');
                 router.push('/profile');
                 break;
-            case '5':
+            case '6':
                 console.log('settings');
                 router.push('/user-settings/setting');
             default:
@@ -88,13 +99,11 @@ function SideBar({ collapsed, setCollapsed, logout }) {
         const hideTrigerbtn = document.querySelector(
             '.ant-layout-sider-trigger',
         );
-        console.log(hideTrigerbtn, 'asdasd');
+
         if (window.innerWidth <= 768) {
-            console.log(window.innerWidth, 'asdasd');
             setCollapsed(true);
             hideTrigerbtn.classList.add('hide');
         } else {
-            console.log(window.innerWidth, 'asdasd');
             setCollapsed(false);
             hideTrigerbtn.classList.remove('hide');
         }
