@@ -36,8 +36,8 @@
 }
 
 .sidebar_popover {
-    margin-top: 20vh;
-    padding: 0.5rem 1rem;
+    margin-top: 3rem;
+    padding: 0.5rem 1rem;  
 }
 
 .mainContainer {
@@ -51,10 +51,7 @@
     z-index: 1;
     border-right: 1px solid #424242;
 }
-.sidebar_popover {
-    margin-top: 20vh;
-    padding: 0.5rem 1rem;
-}
+ 
 .container {
     margin-top: 1rem;
 }
@@ -62,28 +59,46 @@
     font-size: 1.2rem !important;
 }
 
+.mobileContainer{
+    display: none
+}
+
 @media only screen and (max-width: 500px) {
     .mainContainer {
-        height: 7rem;
-        width: 100vh !important;
-        max-width: 100vh !important;
-        top: initial;
+       display: none;
     }
-    .container {
-        margin-top: 0;
+    .mobileContainer{
+        display: block;
+       
     }
-    .mainContainer ul {
-        display: flex;
+    .bottomSideBar{
+        position: fixed;
+        z-index:999;
+        width:100%;
+        bottom:0;
     }
-    .menuLogo {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+    .topSideBar {
+        position: fixed;
+        z-index:999;
+        width:100%;
+        top:0; 
+        color: rgba(255, 255, 255, 0.65);
+        background: #001529;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding:1rem;
     }
-    .mainLogo {
-        display: none;
+
+    .mobileBottomSideBar{
+       display:flex;
+       align-items: center;
+       width: 100%;
+       justify-content: space-around;
+       height: 4rem;
     }
-    .sidebar_popover {
-        display: none;
-    }
+     .sidebar_popover{
+        margin:0;
+        padding:0;
+     }
 }

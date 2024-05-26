@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks/reduxHooks';
 import apiService from '@/service/apiService';
 import { Button, Image, Layout, Upload, message } from 'antd';
 import { useRouter } from 'next/navigation';
+import Style from './profile.module.css'
 import React, { useEffect, useRef, useState } from 'react';
 import {
     AimOutlined,
@@ -138,13 +139,8 @@ function Profile() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                style={{
-                    margin: '0rem',
-                    // marginTop: '1rem',
-                    marginLeft: collapsed ? '10vh' : '20rem',
-                    transition: 'margin-left margin-right 0.9s ease-in-out',
-                    maxWidth: '50vw',
-                }}
+               id = {collapsed ? 'collapesd' : 'extended'}
+               className={"main_side_bar"}
             >
                 <div
                     style={{
@@ -156,6 +152,7 @@ function Profile() {
                         // border: '1px solid #424242',
                         position: 'relative',
                     }}
+                    className={`xm-100 xm-p-10`}
                 >
                     <CommonHeader
                         backgroundColor={'none'}
@@ -182,13 +179,8 @@ function Profile() {
                                         ? selectedFile
                                         : userData?.displayPicture
                                 }
-                                alt="Profile Picture"
-                                style={{
-                                    height: '20rem',
-                                    width: '43vw',
-                                    objectFit: 'cover', // Ensures full width with aspect ratio preserved
-                                    borderRadius: 'inherit', // Inherit border radius from parent if needed
-                                }}
+                                alt="Cover Picture"
+                                className={Style.coverPic}
                             />
                             <div
                                 style={{
@@ -258,14 +250,8 @@ function Profile() {
                         </div>
                     ) : (
                         <div
-                            style={{
-                                height: '20rem',
-                                width: '43vw',
-                                border: '3px solid grey',
-                                // background: 'grey',
-                                display: 'grid',
-                                placeContent: 'center',
-                            }}
+                             
+                            className={Style.CoverPic}
                         >
                             <Button
                                 style={{ width: '100%' }}
@@ -287,7 +273,6 @@ function Profile() {
 
                     <div
                         style={{
-                            border: '3px solid black',
                             borderRadius: '50%',
                             position: 'absolute',
                             bottom: '0vh',
@@ -295,13 +280,8 @@ function Profile() {
                         }}
                     >
                         <Image
-                            style={{
-                                borderRadius: '50%',
-                                maxHeight: '20vh',
-                                minHeight: '20vh',
-                                minWidth: '20vh',
-                                maxWidth: '20vh',
-                            }}
+                            
+                            className={Style.profilePicture}
                             src={userData?.profilePicture}
                             alt="Profile Picture"
                         />
