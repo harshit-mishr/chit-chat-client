@@ -1,13 +1,14 @@
 import { Card, Skeleton } from 'antd';
 import React from 'react';
 
-export default function ProfileCardSkeleton({ active }) {
+export default function ProfileCardSkeleton({ active, className }) {
     return (
         <Card
             hoverable
             style={{
                 width: 240,
             }}
+            className={className}
         >
             <div style={{ textAlign: 'center' }}>
                 <Skeleton.Image

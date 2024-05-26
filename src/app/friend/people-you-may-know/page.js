@@ -8,10 +8,12 @@ import { Button, Form, Input, Layout, message, theme } from 'antd';
 import { useRouter } from 'next/navigation';
 import Style from './style.module.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ProfileCard from '@/components/ProfileCard/ProfileCard';
 import CPagination from '@/components/CommonPagination/CPagination';
 import ProfileCardSkeleton from '@/components/SkeletonLoader/ProfileCardSkeleton/ProfileCardSkeleton';
+import { useSocketContext } from '@/lib/contexts/SocketContext';
+import { connectSocket } from '@/utils/socket/socket';
 const { Content } = Layout;
 
 function PeopleYouMayKnow() {
@@ -23,6 +25,9 @@ function PeopleYouMayKnow() {
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const skeletonArray = Array.from({ length: 9 }, (_, i) => i);
+    const { socket } = useSocketContext();
+    const searchValueRef = useRef(searchValue);
+    const currentPageRef = useRef(currentPage);
 
     const onLeftClick = () => {
         router.back();
@@ -58,7 +63,8 @@ function PeopleYouMayKnow() {
     }
 
     useEffect(() => {
-        getPeopleYouMayKnow(currentPage, true);
+        console.log('Yahase call huwa..');
+        getPeopleYouMayKnow(1, true);
     }, []);
 
     const handleSearch = async (value, page = 1) => {
@@ -78,6 +84,9 @@ function PeopleYouMayKnow() {
             console.log('response', response);
             setPeopleList(response.data.data);
             setTotalCount(response.data.total);
+            setSearchValue(value);
+            searchValueRef.current = value;
+            currentPageRef.current = page;
         } catch (error) {
             console.error('Error:', error);
         }
@@ -87,6 +96,7 @@ function PeopleYouMayKnow() {
 
     const onPageChange = page => {
         setCurrentPage(page);
+        currentPageRef.current = page;
 
         if (searchValue) {
             handleSearch(searchValue, page);
@@ -171,6 +181,10 @@ function PeopleYouMayKnow() {
                 response.status === 201
             ) {
                 if (searchValue) {
+                    console.log(
+                        'searchValue should call handleSearch',
+                        searchValue,
+                    );
                     handleSearch(searchValue, currentPage);
                 } else {
                     getPeopleYouMayKnow(currentPage, false);
@@ -189,6 +203,87 @@ function PeopleYouMayKnow() {
             loading();
         }
     };
+
+    const onFriendRequest = async (item, action) => {
+        console.log('item on follow', item, 'action', action);
+        const loading = message.loading('Sending friend request', 0);
+        try {
+            const response = await apiService.post('/user/friend-request', {
+                targetUserId: item._id,
+                action,
+            });
+            console.log('response', response);
+            if (
+                response.statusText === 'OK' ||
+                response.status === 200 ||
+                response.status === 201
+            ) {
+                if (searchValue) {
+                    handleSearch(searchValue, currentPage);
+                } else {
+                    getPeopleYouMayKnow(currentPage, false);
+                }
+
+                message.success(
+                    item.username + ' Friend request sent successfully',
+                );
+                loading();
+            }
+        } catch (error) {
+            message.error('Something went wrong while sending friend request');
+            loading();
+            console.error('Error:', error);
+        } finally {
+            loading();
+        }
+    };
+
+    console.log('searchVurrent', searchValueRef.current);
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        console.log("socket" , socket)
+        // if (!socket) {
+        //     connectSocket(accessToken);
+        // }
+        const handleSocketEvents = (eventName, data) => {
+            const { info, from, to } = data;
+            console.log(eventName, data, info);
+
+            message.success(`${from}    ${info}   ${to}`);
+            // Refresh the people list
+            if (searchValueRef.current) {
+                console.log(
+                    'searchValue should call handleSearch',
+                    searchValueRef.current,
+                );
+                handleSearch(searchValueRef.current, currentPageRef.current);
+            } else {
+                console.log(
+                    'searchValue empty should call getPeopleYouMayKnow',
+                );
+                getPeopleYouMayKnow(currentPageRef.current, false);
+            }
+        };
+
+        const eventNames = [
+            'friendRequestSent',
+            'unfriend',
+            'friendRequestAccepted',
+            'friendRequestCancelled',
+            'friendRequestDeclined',
+        ];
+
+        eventNames.forEach(eventName => {
+            socket?.on(eventName, handleSocketEvents.bind(null, eventName));
+        });
+
+        return () => {
+            eventNames.forEach(eventName => {
+                socket?.off(eventName);
+            });
+        };
+    }, []);
 
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
@@ -222,7 +317,6 @@ function PeopleYouMayKnow() {
                             allowClear
                             size="large"
                             onSearch={value => {
-                                setSearchValue(value);
                                 handleSearch(value, 1);
                                 setCurrentPage(1);
                             }}
@@ -248,6 +342,21 @@ function PeopleYouMayKnow() {
                                             onFollow(item, 'remove')
                                         }
                                         onUnFollow={() => onUnFollow(item)}
+                                        onFriendRequestSend={() =>
+                                            onFriendRequest(item, 'send')
+                                        }
+                                        onFriendRequestCancel={() =>
+                                            onFriendRequest(item, 'cancel')
+                                        }
+                                        onFriendRequestAccept={() =>
+                                            onFriendRequest(item, 'accept')
+                                        }
+                                        onFriendRequestReject={() =>
+                                            onFriendRequest(item, 'decline')
+                                        }
+                                        onUnFriend={() =>
+                                            onFriendRequest(item, 'unfriend')
+                                        }
                                         key={item._id}
                                         data={item}
                                     />
