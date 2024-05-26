@@ -144,7 +144,6 @@ function Profile() {
             >
                 <div
                     style={{
-                        padding: 45,
                         paddingTop: 20,
                         minHeight: 'max-content',
                         maxHeight: 'max-content',
@@ -290,12 +289,11 @@ function Profile() {
 
                 <div
                     style={{
-                        marginTop: '5rem',
-                        padding: 45,
                         paddingTop: 0,
                         display: 'flex',
                         justifyContent: 'space-between',
                     }}
+                    className={`xm-p-10 ${Style.user_data_container}`}
                 >
                     <div>
                         <h3>{userData?.username?.toUpperCase()}</h3>
@@ -307,26 +305,32 @@ function Profile() {
                     </div>
                     <div
                         style={{
-                            marginTop: '1rem',
                             display: 'flex',
                             alignItems: 'center',
                             gap: '1rem',
                         }}
                     >
                         <AimOutlined style={{ fontSize: '1.5rem' }} />
+                        <div className={Style.address}>
                         <p style={{ color: 'gray', fontSize: '1rem' }}>
-                            {userData?.city || 'No city'} &nbsp; | &nbsp;{' '}
+                            {userData?.city || 'No city'}  
+                            
+                        </p>
+                        <p style={{ color: 'gray', fontSize: '1rem' }}>
+                            
                             {userData?.country || 'No country'}
                         </p>
+                        </div>
                     </div>
                 </div>
 
                 <div
                     style={{
                         minHeight: '100vh',
-                        padding: 45,
-                        paddingBottom: 100,
+                        padding: 10,
+                        marginBottom:100
                     }}
+                    className={`xm-100`}
                 >
                     {allPost.map(post => (
                         <div
