@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card, Image, Typography } from 'antd';
 import Style from './style.module.css';
 import { useAppSelector } from '@/lib/hooks/reduxHooks';
-const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue }) => {
+const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue,className }) => {
     const userData = useAppSelector(state => state?.user?.userData);
     const alreadyFollow = data.followers?.includes(userData?._id);
     const alreadyRemoveFromSuggestion = userData?.removedSuggestions?.includes(
@@ -11,15 +11,12 @@ const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue }) => {
 
     return (
         <Card
+            className={className}
             hoverable
-            style={{
-                width: 240,
-                height: 420,
-            }}
         >
             <div style={{ textAlign: 'center' }}>
                 <Image
-                    height={200}
+                    className={Style.profile_image}
                     alt={data?.username}
                     src={data?.profilePicture}
                 />

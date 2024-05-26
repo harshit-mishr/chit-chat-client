@@ -193,25 +193,18 @@ function PeopleYouMayKnow() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                style={{
-                    margin: '0rem',
-                    // marginTop: '1rem',
-                    marginLeft: collapsed ? '20vh' : '30rem',
-                    transition: 'margin-left margin-right 0.9s ease-in-out',
-
-                    maxWidth: '50vw',
-                }}
+                 id = {collapsed ? 'collapesd' : 'extended'}
+                 className={"main_side_bar"}
             >
                 <div
                     style={{
-                        // padding: 10,
                         minHeight: '100vh',
                         maxHeight: 'max-content',
                         marginBottom: '5rem',
-                        // background: colorBgContainer,
                         borderRadius: '0.2rem',
                         overflow: 'hidden',
                     }}
+                    className={`xm-100 xm-p-10`}
                 >
                     <CommonHeader
                         className={Style.common_header}
@@ -236,24 +229,18 @@ function PeopleYouMayKnow() {
                         />
                     </div>
                     <div
-                        style={{
-                            marginTop: '5vh',
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            gap: '1rem',
-                        }}
+                        className={Style.profile_card_container}
                     >
                         {loading ? (
                             skeletonArray.map(item => (
-                                <ProfileCardSkeleton active={true} key={item} />
+                                <ProfileCardSkeleton className={Style.profile_card} active={true} key={item} />
                             ))
                         ) : (
                             <>
                                 {peopleList.map((item, index) => (
                                     <ProfileCard
-                                        searchValue={searchValue}
+                                        className={Style.profile_card}
+                                        searchValue={searchValue}   
                                         onFollow={() =>
                                             onFollow(item, 'follow')
                                         }

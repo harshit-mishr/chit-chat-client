@@ -13,3 +13,30 @@
     border-color: #1668dc;
     outline-color: #1668dc;
 }
+.profile_card_container{
+    margin-top: 5vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    
+}
+.profile_card{
+    width: 240;
+    height: 420;
+}
+@media screen and (max-width: 500px) {
+    .common_header {
+        width: 100%;
+        top:5rem;
+    }
+    .profile_card_container {
+        justify-content:start;
+        width:100vw;
+        gap: 0.5rem;
+    }
+    .profile_card{
+        width:46vw;
+    }
+}

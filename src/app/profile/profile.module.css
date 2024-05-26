@@ -8,20 +8,30 @@
 }
 .profilePicture {
     border-radius: 50%;
-    /* max-height: 20vh; */
-    /* min-height: 20vh; */
-    /* min-width: 20vh; */
-    object-fit: cover;
-    width: 10rem;
-    width: 80% !important;
-    height: 7rem;
+    max-height: 20vh;  
+    min-height: 20vh;
+    min-width: 20vh;
+
+}
+.user_data_container{
+    padding-top:0;
+    display: flex;
+    justify-content: space-between;
 }
 
 @media only screen and (max-width: 500px) {
     .CoverPic {
         width: 100%;
-        height: 15rem;
+        height: 12rem;
     }
     .profilePicture {
+        object-fit: cover;
+        width: 80% !important;
+        height: 3rem !important;
+        min-height: 7rem;
+        min-width: initial;
+    }
+    .user_data_container{
+        width: 100vw;
     }
 }

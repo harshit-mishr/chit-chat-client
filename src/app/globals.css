@@ -1,65 +1,64 @@
 :root {
-	--max-width: 1100px;
-	--border-radius: 12px;
+    --max-width: 1100px;
+    --border-radius: 12px;
 }
 
 * {
-	box-sizing: border-box;
-	padding: 0;
-	margin: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
 }
 
 html,
 body {
-	max-width: 100vw;
-	overflow-x: hidden;
-	font-family: "Inter", sans-serif;
-	background-color: #000;
-	color: #fff;
+    max-width: 100vw;
+    overflow-x: hidden;
+    font-family: 'Inter', sans-serif;
+    background-color: #000;
+    color: #fff;
 }
 
 body {
 }
 
 a {
-	color: inherit;
-	text-decoration: none;
+    color: inherit;
+    text-decoration: none;
 }
 :where(.css-dev-only-do-not-override-kghr11).ant-form-item
-	.ant-form-item-label
-	> label.ant-form-item-required:not(
-		.ant-form-item-required-mark-optional
-	)::before {
-	content: "";
+    .ant-form-item-label
+    > label.ant-form-item-required:not(
+        .ant-form-item-required-mark-optional
+    )::before {
+    content: '';
 }
 
-
-#collapesd{
- margin-left:10vh;
+#collapesd {
+    margin-left: 10vh;
 }
-#extended{
- margin-left:20rem;
+#extended {
+    margin-left: 20rem;
 }
-.main_side_bar{
-	margin: 0rem;
-	margin-top: 1rem;
-	transition: margin-left margin-right 0.9s ease-in-out;
-	max-width: 50vw;
+.main_side_bar {
+    margin: 0rem;
+    margin-top: 1rem;
+    transition: margin-left margin-right 0.9s ease-in-out;
+    max-width: 50vw;
 }
-.main_layout{
-	padding: 45;
-	min-height: 100vh;
-	max-height: max-content,
+.main_layout {
+    padding: 45;
+    min-height: 100vh;
+    max-height: max-content;
 }
 
 @media (prefers-color-scheme: dark) {
-	html {
-		color-scheme: initial;
-	}
+    html {
+        color-scheme: initial;
+    }
 }
 
 .ant-layout-sider-trigger.hide {
-    display:none;
+    display: none;
 }
 @media screen and (max-width: 768px) {
     .page_Content__GWz0m:not(.page_collapsed__dU_7w) {
@@ -70,26 +69,28 @@ a {
     .page_Content__GWz0m:not(.page_collapsed__dU_7w) {
         margin-left: 0 !important;
     }
-	:where(.css-dev-only-do-not-override-8imiip).ant-menu-inline-collapsed >.ant-menu-item {
-		padding-inline: 0 !important
-	}
-	.ant-menu-title-content {
-		display: none !important;
-	}
-	.main_side_bar{
-		margin:0;
-	}
-	#collapesd, #extended{
-		margin:0;
-	}
-	.main_layout{
-	   width: 100vw;
-	}
-	.xm-100{
-	   width: 100vw;
-	}
-	.xm-p-10{
-		padding:10px !important;
-		margin-top: 5.5rem !important;
-	}
+    :where(.css-dev-only-do-not-override-8imiip).ant-menu-inline-collapsed
+        > .ant-menu-item {
+        padding-inline: 0 !important;
+    }
+    .ant-menu-title-content {
+        display: none !important;
+    }
+    .main_side_bar {
+        margin: 0;
+    }
+    #collapesd,
+    #extended {
+        margin: 0;
+    }
+    .main_layout {
+        width: 100vw;
+    }
+    .xm-100 {
+        width: 100vw;
+    }
+    .xm-p-10 {
+        padding: 10px !important;
+        margin-top: 5.5rem !important;
+    }
 }
