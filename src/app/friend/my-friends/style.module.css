@@ -1,0 +1,5 @@
+.common_header {
+    position: fixed;
+    width: 50%;
+    z-index: 1;
+}

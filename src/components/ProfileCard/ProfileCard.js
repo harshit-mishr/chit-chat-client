@@ -14,6 +14,8 @@ const ProfileCard = ({
     onFriendRequestReject,
     onFriendRequestAccept,
     onUnFriend,
+    hideRemoveButton,
+    hideFollowUnFollowButton,
 }) => {
     const userData = useAppSelector(state => state?.user?.userData);
     const alreadyFollow = data.followers?.includes(userData?._id);
@@ -32,10 +34,7 @@ const ProfileCard = ({
     const alreadyFriend = data?.friends?.includes(userData?._id);
 
     return (
-        <Card
-            className={className}
-            hoverable
-        >
+        <Card className={className} hoverable>
             <div style={{ textAlign: 'center' }}>
                 <Image
                     className={Style.profile_image}
@@ -55,13 +54,15 @@ const ProfileCard = ({
                     gap: '1vh',
                 }}
             >
-                <Button
-                    onClick={alreadyFollow ? onUnFollow : onFollow}
-                    type="dashed"
-                    block
-                >
-                    {alreadyFollow ? 'UnFollow' : 'Follow'}
-                </Button>
+                {!hideFollowUnFollowButton && (
+                    <Button
+                        onClick={alreadyFollow ? onUnFollow : onFollow}
+                        type="dashed"
+                        block
+                    >
+                        {alreadyFollow ? 'UnFollow' : 'Follow'}
+                    </Button>
+                )}
                 {!alreadyFriend && (
                     <Button
                         onClick={
@@ -83,6 +84,7 @@ const ProfileCard = ({
                 )}
 
                 {!alreadyRemoveFromSuggestion &&
+                    !hideRemoveButton &&
                     !searchValue &&
                     !alreadyFollow && (
                         <Button onClick={onRemove} type="dashed" block>
