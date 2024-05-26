@@ -22,6 +22,7 @@ const withAuth = Component => {
                     if (accessToken && !socket) {
                         if (accessToken && !getSocket()) {
                             connectSocket(accessToken);
+                            setSocket(getSocket());
                         }
                     }
                 }

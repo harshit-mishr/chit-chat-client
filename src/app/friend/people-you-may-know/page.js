@@ -25,9 +25,9 @@ function PeopleYouMayKnow() {
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const skeletonArray = Array.from({ length: 9 }, (_, i) => i);
-    const { socket } = useSocketContext();
     const searchValueRef = useRef(searchValue);
     const currentPageRef = useRef(currentPage);
+    const { socket } = useSocketContext();
 
     const onLeftClick = () => {
         router.back();
@@ -242,10 +242,11 @@ function PeopleYouMayKnow() {
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
-        console.log("socket" , socket)
-        // if (!socket) {
-        //     connectSocket(accessToken);
-        // }
+        console.log('socket', socket);
+        if (!socket) {
+            connectSocket(accessToken);
+        }
+        console.log('socket after', socket);
         const handleSocketEvents = (eventName, data) => {
             const { info, from, to } = data;
             console.log(eventName, data, info);
@@ -391,4 +392,4 @@ function PeopleYouMayKnow() {
     );
 }
 
-export default PeopleYouMayKnow;
+export default withAuth(PeopleYouMayKnow);
