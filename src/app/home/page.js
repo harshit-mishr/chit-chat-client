@@ -150,7 +150,6 @@ const Home = ({}) => {
                 >
                     <div
                         style={{
-                            padding: 45,
                             minHeight: '100vh',
                             maxHeight: 'max-content',
                             // background: colorBgContainer,

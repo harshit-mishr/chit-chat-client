@@ -117,7 +117,6 @@ function AccountSetting() {
             >
                 <div
                     style={{
-                        // padding: 10,
                         minHeight: '120vh',
                         maxHeight: '120vh',
                         marginBottom: '5rem',

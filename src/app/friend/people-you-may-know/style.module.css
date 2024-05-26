@@ -1,6 +1,7 @@
 .common_header {
     position: fixed;
     width: 60%;
+    top: 0  ;
     z-index: 2;
 }
 
@@ -23,8 +24,18 @@
     
 }
 .profile_card{
-    width: 240;
-    height: 420;
+    width: 31%;  
+}
+
+@media only screen and (max-width: 1060px){
+    .profile_card{
+        width: 47%;  
+    }
+}
+@media only screen and (max-width: 768px){
+    .profile_card{
+        width: 100%;  
+    }
 }
 @media screen and (max-width: 500px) {
     .common_header {
