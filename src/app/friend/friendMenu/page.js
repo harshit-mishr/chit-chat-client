@@ -54,7 +54,7 @@ function FriendMenu() {
                 break;
             case '2':
                 console.log('Friends requests');
-                router.push('/friend/friends-requests');
+                router.push('/friend/friendRequest');
                 break;
             case '3':
                 console.log('My Friends');
@@ -72,12 +72,12 @@ function FriendMenu() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                  id = {collapsed ? 'collapesd' : 'extended'}
-                  className={"main_side_bar"}
+                id={collapsed ? 'collapesd' : 'extended'}
+                className={'main_side_bar'}
             >
                 <div
                     style={{
-                        padding: 24,
+                        padding: 45,
                         minHeight: '100vh',
                         maxHeight: '100vh',
                         background: colorBgContainer,

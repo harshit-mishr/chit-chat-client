@@ -14,6 +14,7 @@ import CPagination from '@/components/CommonPagination/CPagination';
 import ProfileCardSkeleton from '@/components/SkeletonLoader/ProfileCardSkeleton/ProfileCardSkeleton';
 import { useSocketContext } from '@/lib/contexts/SocketContext';
 import { connectSocket } from '@/utils/socket/socket';
+
 const { Content } = Layout;
 
 function PeopleYouMayKnow() {
@@ -25,9 +26,9 @@ function PeopleYouMayKnow() {
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState('');
     const skeletonArray = Array.from({ length: 9 }, (_, i) => i);
-    const { socket } = useSocketContext();
     const searchValueRef = useRef(searchValue);
     const currentPageRef = useRef(currentPage);
+    const { socket } = useSocketContext();
 
     const onLeftClick = () => {
         router.back();
@@ -242,7 +243,7 @@ function PeopleYouMayKnow() {
 
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
-        console.log("socket" , socket)
+        console.log('socket', socket);
         // if (!socket) {
         //     connectSocket(accessToken);
         // }
@@ -288,8 +289,8 @@ function PeopleYouMayKnow() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                 id = {collapsed ? 'collapesd' : 'extended'}
-                 className={"main_side_bar"}
+                id={collapsed ? 'collapesd' : 'extended'}
+                className={'main_side_bar'}
             >
                 <div
                     style={{
@@ -322,19 +323,21 @@ function PeopleYouMayKnow() {
                             }}
                         />
                     </div>
-                    <div
-                        className={Style.profile_card_container}
-                    >
+                    <div className={Style.profile_card_container}>
                         {loading ? (
                             skeletonArray.map(item => (
-                                <ProfileCardSkeleton className={Style.profile_card} active={true} key={item} />
+                                <ProfileCardSkeleton
+                                    className={Style.profile_card}
+                                    active={true}
+                                    key={item}
+                                />
                             ))
                         ) : (
                             <>
                                 {peopleList.map((item, index) => (
                                     <ProfileCard
                                         className={Style.profile_card}
-                                        searchValue={searchValue}   
+                                        searchValue={searchValue}
                                         onFollow={() =>
                                             onFollow(item, 'follow')
                                         }
@@ -378,4 +381,4 @@ function PeopleYouMayKnow() {
     );
 }
 
-export default PeopleYouMayKnow;
+export default withAuth(PeopleYouMayKnow);

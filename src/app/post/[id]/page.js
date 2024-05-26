@@ -142,7 +142,6 @@ function Post({}) {
             >
                 <div
                     style={{
-                        padding: 45,
                         paddingTop: 20,
                         minHeight: '100vh',
                         maxHeight: 'max-content',

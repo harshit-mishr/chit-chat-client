@@ -1,9 +1,10 @@
 .profile_image {
-    height:200px
+    height: 8rem !important;
+    object-fit: cover;
 }
 
 @media only screen and (max-width: 500px) {
     .profile_image {
-        height:100px !important;
+        height: 100px !important;
     }
 }
