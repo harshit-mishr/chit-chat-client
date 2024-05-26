@@ -121,6 +121,7 @@ function SideBar({ collapsed, setCollapsed, logout }) {
     }, []);
 
     return (
+    <div>
         <Sider
             width={'20rem'}
             collapsible
@@ -150,7 +151,6 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                     {!collapsed && (
                         <Title
                             style={{
-                                // flex: 0.3,
                                 marginLeft: '3vh',
                                 textDecoration: 'underline',
                             }}
@@ -177,7 +177,39 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                     />
                 </div>
             </div>
-        </Sider>
+          </Sider>
+        <div className={Style.mobileContainer}>
+            <div className={Style.topSideBar}>
+               
+                   <Image
+                        src={LogoSVG}
+                        width={50}
+                        height={50}
+                        alt="logo"
+                        style={{ overflow: 'hidden', borderRadius: '10%' }}
+                        className={Style.mainLogo}
+                    />
+                    <div className={Style.sidebar_popover}>
+                        <CustomPopover
+                            collapsed={collapsed}
+                            userData={userData}
+                            logout={logout}
+                        />
+                   </div>
+            </div>   
+            <div className={Style.bottomSideBar}>
+                <Menu
+                    mode={"horizontal"}
+                    selectedKeys={[selectedKey]}
+                    items={items}
+                    theme="dark"
+                    mode="inline"
+                    className={Style.mobileBottomSideBar}
+                    onClick={handleNavigation}
+                ></Menu>
+            </div>    
+        </div>
+     </div>    
     );
 }
 
