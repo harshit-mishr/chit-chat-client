@@ -2,12 +2,33 @@ import React from 'react';
 import { Button, Card, Image, Typography } from 'antd';
 import Style from './style.module.css';
 import { useAppSelector } from '@/lib/hooks/reduxHooks';
-const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue }) => {
+const ProfileCard = ({
+    data,
+    onFollow,
+    onUnFollow,
+    onRemove,
+    searchValue,
+    onFriendRequestSend,
+    onFriendRequestCancel,
+    onFriendRequestReject,
+    onFriendRequestAccept,
+    onUnFriend,
+}) => {
     const userData = useAppSelector(state => state?.user?.userData);
     const alreadyFollow = data.followers?.includes(userData?._id);
     const alreadyRemoveFromSuggestion = userData?.removedSuggestions?.includes(
         data?._id,
     );
+
+    const alreadySendFriendRequest = data.friendRequestsReceived?.includes(
+        userData?._id,
+    );
+
+    const friendRequestsReceived = data?.friendRequestsSent?.includes(
+        userData?._id,
+    );
+
+    const alreadyFriend = data?.friends?.includes(userData?._id);
 
     return (
         <Card
@@ -43,9 +64,25 @@ const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue }) => {
                 >
                     {alreadyFollow ? 'UnFollow' : 'Follow'}
                 </Button>
-                <Button type="dashed" block>
-                    Add Friend
-                </Button>
+                {!alreadyFriend && (
+                    <Button
+                        onClick={
+                            friendRequestsReceived
+                                ? onFriendRequestReject
+                                : alreadySendFriendRequest
+                                ? onFriendRequestCancel
+                                : onFriendRequestSend
+                        }
+                        type="dashed"
+                        block
+                    >
+                        {friendRequestsReceived
+                            ? 'Reject Request'
+                            : alreadySendFriendRequest
+                            ? 'Cancel Request'
+                            : 'Add Friend'}
+                    </Button>
+                )}
 
                 {!alreadyRemoveFromSuggestion &&
                     !searchValue &&
@@ -54,6 +91,18 @@ const ProfileCard = ({ data, onFollow, onUnFollow, onRemove, searchValue }) => {
                             Remove
                         </Button>
                     )}
+
+                {friendRequestsReceived ? (
+                    <Button onClick={onFriendRequestAccept} type="dashed" block>
+                        Accept
+                    </Button>
+                ) : null}
+
+                {alreadyFriend && (
+                    <Button onClick={onUnFriend} type="dashed" block>
+                        UnFriend
+                    </Button>
+                )}
             </div>
         </Card>
     );
