@@ -35,9 +35,11 @@ a {
 
 #collapesd {
     margin-left: 10vh;
+    padding: 45px;
 }
 #extended {
     margin-left: 20rem;
+    padding: 45px;
 }
 .main_side_bar {
     margin: 0rem;
