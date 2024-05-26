@@ -8,11 +8,12 @@ const ProfileCard = ({
     onUnFollow,
     onRemove,
     searchValue,
+    className,
     onFriendRequestSend,
     onFriendRequestCancel,
     onFriendRequestReject,
     onFriendRequestAccept,
-    onUnFriend,
+    onUnFriend
 }) => {
     const userData = useAppSelector(state => state?.user?.userData);
     const alreadyFollow = data.followers?.includes(userData?._id);
@@ -32,15 +33,12 @@ const ProfileCard = ({
 
     return (
         <Card
+            className={className}
             hoverable
-            style={{
-                width: 240,
-                height: 420,
-            }}
         >
             <div style={{ textAlign: 'center' }}>
                 <Image
-                    height={200}
+                    className={Style.profile_image}
                     alt={data?.username}
                     src={data?.profilePicture}
                 />

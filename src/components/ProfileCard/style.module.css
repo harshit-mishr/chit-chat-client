@@ -1,0 +1,9 @@
+.profile_image {
+    height:200px
+}
+
+@media only screen and (max-width: 500px) {
+    .profile_image {
+        height:100px !important;
+    }
+}
