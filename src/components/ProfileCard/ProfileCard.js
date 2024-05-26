@@ -13,7 +13,7 @@ const ProfileCard = ({
     onFriendRequestCancel,
     onFriendRequestReject,
     onFriendRequestAccept,
-    onUnFriend
+    onUnFriend,
 }) => {
     const userData = useAppSelector(state => state?.user?.userData);
     const alreadyFollow = data.followers?.includes(userData?._id);
