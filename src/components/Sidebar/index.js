@@ -121,67 +121,66 @@ function SideBar({ collapsed, setCollapsed, logout }) {
     }, []);
 
     return (
-    <div>
-        <Sider
-            width={'20rem'}
-            collapsible
-            collapsed={collapsed}
-            className={Style.mainContainer}
-            onCollapse={value => setCollapsed(value)}
-        >
-            <div className={Style.container}>
-                <div
-                    style={{
-                        display: 'flex',
-                        gap: '0.2rem',
-                        // justifyContent: 'space-between',
-                        padding: '0.5rem 1rem',
-                        alignItems: 'center',
-                    }}
-                >
+        <div>
+            <Sider
+                width={'20rem'}
+                collapsible
+                collapsed={collapsed}
+                className={Style.mainContainer}
+                onCollapse={value => setCollapsed(value)}
+            >
+                <div className={Style.container}>
+                    <div
+                        style={{
+                            display: 'flex',
+                            gap: '0.2rem',
+                            // justifyContent: 'space-between',
+                            padding: '0.5rem 1rem',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Image
+                            src={LogoSVG}
+                            width={50}
+                            height={50}
+                            alt="logo"
+                            style={{ overflow: 'hidden', borderRadius: '10%' }}
+                            className={Style.mainLogo}
+                        />
+
+                        {!collapsed && (
+                            <Title
+                                style={{
+                                    marginLeft: '3vh',
+                                    textDecoration: 'underline',
+                                }}
+                                level={4}
+                            >
+                                ChitChat
+                            </Title>
+                        )}
+                    </div>
+                    <Menu
+                        style={{ marginTop: '1rem' }}
+                        theme="dark"
+                        selectedKeys={[selectedKey]}
+                        mode="inline"
+                        items={items}
+                        onClick={handleNavigation}
+                    ></Menu>
+
+                    <div className={Style.sidebar_popover}>
+                        <CustomPopover
+                            collapsed={collapsed}
+                            userData={userData}
+                            logout={logout}
+                        />
+                    </div>
+                </div>
+            </Sider>
+            <div className={Style.mobileContainer}>
+                <div className={Style.topSideBar}>
                     <Image
-                        src={LogoSVG}
-                        width={50}
-                        height={50}
-                        alt="logo"
-                        style={{ overflow: 'hidden', borderRadius: '10%' }}
-                        className={Style.mainLogo}
-                    />
-
-                    {!collapsed && (
-                        <Title
-                            style={{
-                                marginLeft: '3vh',
-                                textDecoration: 'underline',
-                            }}
-                            level={4}
-                        >
-                            ChitChat
-                        </Title>
-                    )}
-                </div>
-                <Menu
-                    style={{ marginTop: '1rem' }}
-                    theme="dark"
-                    selectedKeys={[selectedKey]}
-                    mode="inline"
-                    items={items}
-                    onClick={handleNavigation}
-                ></Menu>
-
-                <div className={Style.sidebar_popover}>
-                    <CustomPopover
-                        collapsed={collapsed}
-                        userData={userData}
-                        logout={logout}
-                    />
-                </div>
-            </div>
-          </Sider>
-        <div className={Style.mobileContainer}>
-            <div className={Style.topSideBar}>
-               
-                   <Image
                         src={LogoSVG}
                         width={50}
                         height={50}
@@ -195,21 +194,20 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                             userData={userData}
                             logout={logout}
                         />
-                   </div>
-            </div>   
-            <div className={Style.bottomSideBar}>
-                <Menu
-                    mode={"horizontal"}
-                    selectedKeys={[selectedKey]}
-                    items={items}
-                    theme="dark"
-                    mode="inline"
-                    className={Style.mobileBottomSideBar}
-                    onClick={handleNavigation}
-                ></Menu>
-            </div>    
+                    </div>
+                </div>
+                <div className={Style.bottomSideBar}>
+                    <Menu
+                        mode={'horizontal'}
+                        selectedKeys={[selectedKey]}
+                        items={items}
+                        theme="dark"
+                        className={Style.mobileBottomSideBar}
+                        onClick={handleNavigation}
+                    ></Menu>
+                </div>
+            </div>
         </div>
-     </div>    
     );
 }
 
