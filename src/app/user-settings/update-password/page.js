@@ -75,14 +75,8 @@ function UpdatePassword() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                style={{
-                    margin: '0rem',
-                    marginTop: '1rem',
-                    marginLeft: collapsed ? '20vh' : '30rem',
-                    transition: 'margin-left margin-right 0.9s ease-in-out',
-
-                    maxWidth: '50vw',
-                }}
+                 id = {collapsed ? 'collapesd' : 'extended'}
+                 className={"main_side_bar"}
             >
                 <div
                     style={{
@@ -94,6 +88,7 @@ function UpdatePassword() {
                         borderRadius: '0.2rem',
                         overflow: 'hidden',
                     }}
+                    className={`xm-100 xm-p-10`}
                 >
                     <CommonHeader
                         title="Update Password"
