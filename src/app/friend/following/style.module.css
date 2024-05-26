@@ -1,5 +1,52 @@
 .common_header {
     position: fixed;
-    width: 50%;
-    z-index: 1;
+    width: 60%;
+    top: 0;
+    z-index: 2;
+}
+
+.search_input :hover {
+    border-color: #1668dc;
+    outline-color: #1668dc;
+}
+
+.search_input :focus {
+    border-color: #1668dc;
+    outline-color: #1668dc;
+}
+.profile_card_container {
+    margin-top: 5vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.profile_card {
+    width: 31%;
+}
+
+@media only screen and (max-width: 1060px) {
+    .profile_card {
+        width: 47%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .profile_card {
+        width: 100%;
+    }
+}
+@media screen and (max-width: 500px) {
+    .common_header {
+        width: 100%;
+        top: 5rem;
+    }
+    .profile_card_container {
+        justify-content: start;
+        width: 100vw;
+        gap: 0.5rem;
+    }
+    .profile_card {
+        width: 46vw;
+    }
 }

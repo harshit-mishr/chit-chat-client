@@ -198,46 +198,32 @@ function MyFriend() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                style={{
-                    margin: '0rem',
-                    // marginTop: '1rem',
-                    marginLeft: collapsed ? '20vh' : '30rem',
-                    transition: 'margin-left margin-right 0.9s ease-in-out',
-                    maxWidth: '50vw',
-                }}
+                id={collapsed ? 'collapesd' : 'extended'}
+                className={'main_side_bar'}
             >
                 <div
                     style={{
-                        // padding: 10,
                         minHeight: '100vh',
                         maxHeight: 'max-content',
                         marginBottom: '5rem',
-                        // background: colorBgContainer,
                         borderRadius: '0.2rem',
                         overflow: 'hidden',
                     }}
+                    className={`xm-100 xm-p-10`}
                 >
                     <CommonHeader
                         className={Style.common_header}
                         backgroundColor="black"
-                        title="Friend Requests"
+                        title="My Friends"
                         onLeftClick={() => onLeftClick()}
                     />
 
                     <>
-                        <div
-                            style={{
-                                marginTop: '15vh',
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '1rem',
-                            }}
-                        >
+                        <div className={Style.profile_card_container}>
                             {loading ? (
                                 skeletonArray.map(item => (
                                     <ProfileCardSkeleton
+                                        className={Style.profile_card}
                                         active={true}
                                         key={item}
                                     />
@@ -262,6 +248,7 @@ function MyFriend() {
                                     ) : (
                                         peopleList.map((item, index) => (
                                             <ProfileCard
+                                                className={Style.profile_card}
                                                 onFollow={() =>
                                                     onFollow(item, 'follow')
                                                 }

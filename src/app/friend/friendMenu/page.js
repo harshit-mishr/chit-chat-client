@@ -77,6 +77,7 @@ function FriendMenu() {
             >
                 <div
                     style={{
+                        padding: 45,
                         minHeight: '100vh',
                         maxHeight: '100vh',
                         background: colorBgContainer,

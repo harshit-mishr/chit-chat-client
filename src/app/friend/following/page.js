@@ -115,19 +115,18 @@ function FollowingPeople() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                id = {collapsed ? 'collapesd' : 'extended'}
-                className={"main_side_bar"}
-              
+                id={collapsed ? 'collapesd' : 'extended'}
+                className={'main_side_bar'}
             >
                 <div
                     style={{
                         minHeight: '100vh',
                         maxHeight: 'max-content',
                         marginBottom: '5rem',
-                        // background: colorBgContainer,
                         borderRadius: '0.2rem',
                         overflow: 'hidden',
                     }}
+                    className={`xm-100 xm-p-10`}
                 >
                     <CommonHeader
                         className={Style.common_header}
@@ -137,19 +136,11 @@ function FollowingPeople() {
                     />
 
                     <>
-                        <div
-                            style={{
-                                marginTop: '15vh',
-                                display: 'flex',
-                                flexWrap: 'wrap',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                gap: '1rem',
-                            }}
-                        >
+                        <div className={Style.profile_card_container}>
                             {loading ? (
                                 skeletonArray.map(item => (
                                     <ProfileCardSkeleton
+                                        className={Style.profile_card}
                                         active={true}
                                         key={item}
                                     />
@@ -183,6 +174,7 @@ function FollowingPeople() {
                                     ) : (
                                         peopleList.map((item, index) => (
                                             <ProfileCard
+                                                className={Style.profile_card}
                                                 onUnFollow={() =>
                                                     onUnFollow(item)
                                                 }

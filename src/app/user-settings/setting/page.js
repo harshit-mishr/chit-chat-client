@@ -62,11 +62,12 @@ function Profile() {
     return (
         <MainLayout collapsed={collapsed} setCollapsed={setCollapsed}>
             <Content
-                 id = {collapsed ? 'collapesd' : 'extended'}
-                 className={"main_side_bar"}
+                id={collapsed ? 'collapesd' : 'extended'}
+                className={'main_side_bar'}
             >
                 <div
                     style={{
+                        padding: 45,
                         minHeight: '100vh',
                         maxHeight: '100vh',
                         background: colorBgContainer,

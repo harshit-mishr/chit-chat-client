@@ -84,6 +84,7 @@ a {
     #collapesd,
     #extended {
         margin: 0;
+        padding: 0;
     }
     .main_layout {
         width: 100vw;
