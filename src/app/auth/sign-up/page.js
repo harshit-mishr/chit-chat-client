@@ -261,7 +261,7 @@ const SignUp = () => {
                                 <Button type="primary" htmlType="submit" block>
                                     Sign Up
                                 </Button>
-                                Or <Link href="/auth/login">Login now!</Link>{' '}
+                                Or <Link className={style.signup_button} href="/auth/login">Login now!</Link>{' '}
                                 <br />
                                 {
                                     // Or <Link href='/auth/verify-email'>Verify Email</Link>

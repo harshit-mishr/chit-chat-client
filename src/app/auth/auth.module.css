@@ -9,6 +9,9 @@
 .submit {
     max-width: 100%;
 }
+.signup_button {
+    text-decoration: underline;
+}
 
 .custom_input_wrapper {
     position: relative;

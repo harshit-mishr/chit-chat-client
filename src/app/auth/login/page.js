@@ -135,7 +135,7 @@ export default function Login() {
                             </Link>
                             <div>
                                 New User{'  '}
-                                <Link href="/auth/sign-up">SignUp now!</Link>
+                                <Link className={style.signup_button} href="/auth/sign-up">SignUp now!</Link>
                             </div>
                         </div>
                     </Form>
