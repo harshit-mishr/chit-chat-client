@@ -5,6 +5,7 @@ import withAuth from '@/utils/authentication/withAuth';
 import { Button, Form, Image, Input, Layout, message, theme } from 'antd';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
+import Style from '../settings.module.css'
 import {
     EditOutlined,
     CheckOutlined,
@@ -117,14 +118,9 @@ function AccountSetting() {
             >
                 <div
                     style={{
-                        minHeight: '120vh',
-                        maxHeight: '120vh',
-                        marginBottom: '5rem',
                         background: colorBgContainer,
-                        borderRadius: '0.2rem',
-                        overflow: 'hidden',
                     }}
-                    className={`main_layout`}
+                    className={`main_layout ${Style.main_container}`}
                 >
                     <CommonHeader
                         title="Account Settings"

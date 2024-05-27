@@ -122,7 +122,7 @@ function VerifyEmailInner() {
                                 <Button type="primary" htmlType="submit" block>
                                     Verify Email
                                 </Button>
-                                Or <Link href="/auth/sign-up">SignUp now!</Link>
+                                Or <Link className={style.signup_button} href="/auth/sign-up">SignUp now!</Link>
                             </Form.Item>
                         </Form>
                     </Card>

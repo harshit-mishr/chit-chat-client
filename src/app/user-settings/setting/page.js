@@ -72,7 +72,7 @@ function Profile() {
                         maxHeight: '100vh',
                         background: colorBgContainer,
                     }}
-                    className={`xm-100 xm-p-10`}
+                    className={`xm-100`}
                 >
                     <h1 style={{ textAlign: 'center' }}>Settings</h1>
 
