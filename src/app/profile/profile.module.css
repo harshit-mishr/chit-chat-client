@@ -8,15 +8,21 @@
 }
 .profilePicture {
     border-radius: 50%;
-    max-height: 20vh;  
-    min-height: 20vh;
-    min-width: 20vh;
+    height: 9rem !important;
+    width: 82% !important;
 
 }
 .user_data_container{
-    padding-top:0;
+    margin-top: 5rem    ;
+    padding:.625rem;
     display: flex;
     justify-content: space-between;
+}
+.profile_pic_container{
+    border-radius: 50%;
+    position: absolute;
+    left: -1vw;
+    bottom: -3rem;
 }
 
 @media only screen and (max-width: 500px) {
@@ -27,11 +33,14 @@
     .profilePicture {
         object-fit: cover;
         width: 80% !important;
-        height: 3rem !important;
         min-height: 7rem;
         min-width: initial;
     }
     .user_data_container{
         width: 100vw;
+    }
+    .profile_pic_container{
+        left: 2vw;
+        bottom: -3rem;
     }
 }

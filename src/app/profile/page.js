@@ -271,12 +271,8 @@ function Profile() {
                     )}
 
                     <div
-                        style={{
-                            borderRadius: '50%',
-                            position: 'absolute',
-                            bottom: '0vh',
-                            left: '5vw',
-                        }}
+                         
+                        className={Style.profile_pic_container}
                     >
                         <Image
                             
@@ -288,11 +284,6 @@ function Profile() {
                 </div>
 
                 <div
-                    style={{
-                        paddingTop: 0,
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                    }}
                     className={`xm-p-10 ${Style.user_data_container}`}
                 >
                     <div>
