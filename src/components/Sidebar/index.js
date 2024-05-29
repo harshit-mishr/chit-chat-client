@@ -72,8 +72,8 @@ function SideBar({ collapsed, setCollapsed, logout }) {
                 router.push('/home');
                 break;
             case '2':
-                console.log('messages');
-                router.push('/messages');
+                console.log('chat');
+                router.push('/chat');
                 break;
             case '3':
                 console.log('notifications');
