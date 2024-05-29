@@ -31,16 +31,12 @@ export const SocketContextProvider = ({ children }) => {
         };
     }, [socket]);
 
-    const disconnectSocket = () => {
-        if (socket) {
-            socket.disconnect();
-            console.log('Socket disconnected');
-            setSocket(null);
-        }
+    const disconnectingSocket = () => {
+        disconnectSocket();
     };
 
     return (
-        <SocketContext.Provider value={{ socket, disconnectSocket }}>
+        <SocketContext.Provider value={{ socket, disconnectingSocket }}>
             {children}
         </SocketContext.Provider>
     );

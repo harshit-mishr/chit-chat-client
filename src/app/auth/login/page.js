@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Form,
@@ -16,9 +16,18 @@ import apiService from '../../../service/apiService';
 import { useRouter } from 'next/navigation';
 import { setUserData } from '@/lib/redux/features/user/userSlice';
 import { useAppDispatch } from '@/lib/hooks/reduxHooks';
-
-export default function Login() {
+import { usePathname } from 'next/navigation';
+export default function Login({ params }) {
     const router = useRouter();
+    console.log('params', params);
+    const pathName = usePathname();
+
+    useEffect(() => {
+        if (pathName === '/auth/login') {
+            localStorage.clear();
+        }
+    }, []);
+
     const dispatch = useAppDispatch();
     const [form] = Form.useForm();
     const [isLoading, setIsLoading] = useState(false);
@@ -135,7 +144,12 @@ export default function Login() {
                             </Link>
                             <div>
                                 New User{'  '}
-                                <Link className={style.signup_button} href="/auth/sign-up">SignUp now!</Link>
+                                <Link
+                                    className={style.signup_button}
+                                    href="/auth/sign-up"
+                                >
+                                    SignUp now!
+                                </Link>
                             </div>
                         </div>
                     </Form>
