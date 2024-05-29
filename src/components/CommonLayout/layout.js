@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import apiService from '@/service/apiService';
 import { useRouter } from 'next/navigation';
 import SideBar from '../Sidebar';
+import { disconnectSocket } from '@/utils/socket/socket';
 
 function MainLayout({ children, collapsed, setCollapsed, userData }) {
     const router = useRouter();
@@ -20,6 +21,7 @@ function MainLayout({ children, collapsed, setCollapsed, userData }) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             router.push('/auth/login');
+            disconnectSocket();
         } catch (error) {
             console.error('Error:', error);
         }
