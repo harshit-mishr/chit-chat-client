@@ -4,3 +4,12 @@
 .meta {
     padding: 0rem;
 }
+
+/* .userInfo {
+    float: right;
+} */
+
+.userDescription {
+    display: flex;
+    gap: 2rem;
+}

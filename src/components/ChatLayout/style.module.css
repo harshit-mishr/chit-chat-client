@@ -1,0 +1,15 @@
+.header {
+    border: 1px solid #bd4343;
+    height: 10vh;
+    width: 100%;
+}
+
+.container {
+    width: 90%;
+}
+
+.content {
+    border: 1px solid #bd4343;
+    height: 75vh;
+    width: 100%;
+}

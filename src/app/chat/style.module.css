@@ -1,0 +1,13 @@
+.search_input :hover {
+    border-color: #1668dc;
+    outline-color: #1668dc;
+}
+
+.search_input :focus {
+    border-color: #1668dc;
+    outline-color: #1668dc;
+}
+
+.left_container {
+    max-width: 50vh;
+}
