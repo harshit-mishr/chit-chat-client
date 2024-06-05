@@ -12,4 +12,19 @@
     border: 1px solid #bd4343;
     height: 75vh;
     width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    padding: 1rem;
+}
+
+.message {
+    margin-top: 0.8rem;
+    display: flex;
+}
+
+.text {
+    max-width: 80%;
+    min-width: min-content;
+    padding: 1rem;
+    border-radius: 1rem;
 }
